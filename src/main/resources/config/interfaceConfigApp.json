@@ -1,0 +1,82 @@
+{
+	"title": "Aplicación transaccional de Parranderos Uniandes",
+	"frameH": 600,
+	"frameW": 800,
+	"bannerPath": "./src/main/resources/config/logo.png",
+	"menuBar":
+	[
+		{ "menuTitle": "REQF1",
+		  "options":
+			[
+				{
+					"label": "AdicionarUsuario",
+					"event": "adicionarUsuario"
+				}
+			]
+		},
+		{ "menuTitle": "REQF2",
+		  "options":
+			[
+				{
+					"label": "AdicionarOficina",
+					"event": "adicionarOficina"
+				}
+			]
+		},
+		{ "menuTitle": "REQF3",
+		  "options":
+			[
+				{
+					"label": "AdicionarPuntoDeAtencion",
+					"event": "adicionarPuntoDeAtencion"
+				}
+			]
+		},
+		{ "menuTitle": "REQF4",
+		  "options":
+			[
+				{
+					"label": "AdicionarCuenta",
+					"event": "adicionarCuenta"
+				}
+			]
+		},
+		{ "menuTitle": "REQF5",
+		  "options":
+			[
+				{
+					"label": "CerrarCuenta",
+					"event": "eliminarCuenta"
+				}
+			]
+		},
+		{ "menuTitle": "REQF7",
+		  "options":
+			[
+				{
+					"label": "AdicionarPrestamo",
+					"event": "adicionarPrestamo"
+				}
+			]
+		},
+		{ "menuTitle": "REQF9",
+		  "options":
+			[
+				{
+					"label": "CerrarPrestamo",
+					"event": "eliminarPrestamo"
+				}
+			]
+		},
+		{"menuTitle": "REQC1",
+		"options":
+		[
+			{
+				"label": "consultarCuenta",
+				"event": "darCuentaParaCliente"
+			}
+		]
+	}
+	]
+}
+	

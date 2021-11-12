@@ -1,0 +1,24 @@
+{
+	"title": "Nombres de las tablas de Parranderos Uniandes para la aplicación A",
+	"unidadPersistencia": "bancAndes",
+	"tablas":
+	[
+		"BancAndes_sequence",
+		"USUARIO",
+		"EMPLEADO",
+		"OFICINA",
+		"PUNTODEATENCION",
+		"CAJEROSPUNTOATENCION",
+		"CLIENTE",
+		"ADMINISTRADOR",
+		"CUENTA",
+		"OPERACIONESBANCARIAS",
+		"OPERACIONCUENTA",
+		"OPERACIONCDT",
+		"OPERACIONACCIONES",
+		"OPERACIONINVERSION",
+		"PRESTAMO",
+		"CUOTAMINIMAPRESTAMO",
+		"OPERACIONPRESTAMO"
+	]
+}
