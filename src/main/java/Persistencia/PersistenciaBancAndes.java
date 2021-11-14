@@ -17,7 +17,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import Negocio.Cuenta;
+import Negocio.Cliente;
+import Negocio.CuentasJuridicas;
 import Negocio.Oficina;
 import Negocio.Prestamo;
 import Negocio.PuntoDeAtencion;
@@ -45,10 +46,11 @@ public class PersistenciaBancAndes {
 	
 	private SQLUsuario sqlUsuario;
 	private SQLOficina sqlOficina;
-	private SQLCuenta sqlCuenta;
+	private SQLCuentasJuridicas sqlCuentasJuridicas;
 	private SQLUtil sqlUtil;
 	private SQLPuntoDeAtencion sqlPuntoDeAtencion;
 	private SQLPrestamo sqlPrestamo;
+	private SQLCliente sqlCliente;
 	
 	private PersistenciaBancAndes (){
 		
@@ -63,7 +65,7 @@ public class PersistenciaBancAndes {
 		tablas.add ("CAJEROSPUNTOATENCION");
 		tablas.add ("CLIENTE");
 		tablas.add ("ADMINISTRADOR");
-		tablas.add ("CUENTA");
+		tablas.add ("CUENTASJURIDICAS");
 		tablas.add ("OPERACIONESBANCARIAS");
 		tablas.add ("OPERACIONCUENTA");
 		tablas.add ("OPERACIONCDT");
@@ -72,6 +74,7 @@ public class PersistenciaBancAndes {
 		tablas.add ("PRESTAMO");
 		tablas.add ("CUOTAMINIMAPRESTAMO");
 		tablas.add ("OPERACIONPRESTAMO");
+		
 		
 	}
 	
@@ -130,9 +133,10 @@ public class PersistenciaBancAndes {
 		sqlUsuario = new SQLUsuario(this);
 		sqlOficina = new SQLOficina(this);
 		sqlUtil = new SQLUtil(this);
-		sqlCuenta = new SQLCuenta(this);
+		sqlCuentasJuridicas = new SQLCuentasJuridicas(this);
 		sqlPuntoDeAtencion = new SQLPuntoDeAtencion(this);
 		sqlPrestamo = new SQLPrestamo(this);
+		sqlCliente = new SQLCliente(this);
 		
 	}
 	
@@ -155,7 +159,7 @@ public class PersistenciaBancAndes {
 	}
 	
 	
-	public String darTablaCuenta ()
+	public String darTablaCuentasJuridicas ()
 	{
 		return tablas.get (8);
 	}
@@ -163,6 +167,10 @@ public class PersistenciaBancAndes {
 	public String darTablaPrestamo ()
 	{
 		return tablas.get (14);
+	}
+	public String darTablaCliente ()
+	{
+		return tablas.get (6);
 	}
 	private long nextval ()
 	{
@@ -241,7 +249,7 @@ public class PersistenciaBancAndes {
         }
 	}
 	
-	public Cuenta adicionarCuenta(  String tipoCuenta , int saldo  , long numeroIDCliente  ) 
+	public CuentasJuridicas adicionarCuentaJuridica(  String tipoCuenta , int saldo  , long numeroIDCliente  ) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
         Transaction tx=pm.currentTransaction();
@@ -250,13 +258,13 @@ public class PersistenciaBancAndes {
             tx.begin(); 
             long numeroUnicoA =  nextval ();
             String activa = "Activa";            
-            long tuplasInsertadas = sqlCuenta.adicionarCuenta(pm,numeroUnicoA, tipoCuenta, saldo, activa, numeroIDCliente);
+            long tuplasInsertadas = sqlCuentasJuridicas.adicionarCuenta(pm,numeroUnicoA, tipoCuenta, saldo, activa, numeroIDCliente);
             
             tx.commit();
 
             log.trace ("Inserci�n de Cuenta: " + numeroUnicoA + ": " + tuplasInsertadas + " tuplas insertadas");
             
-            return new Cuenta (numeroUnicoA, tipoCuenta, saldo, activa, numeroIDCliente);
+            return new CuentasJuridicas (numeroUnicoA, tipoCuenta, saldo, activa, numeroIDCliente);
         }
         catch (Exception e)
         {
@@ -340,14 +348,14 @@ public class PersistenciaBancAndes {
         }
 	}
 	
-	public long eliminarCuenta (long numeroUnico) 
+	public long eliminarCuentaJuridica (long numeroUnico) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
         Transaction tx=pm.currentTransaction();
         try
         {
             tx.begin();
-            long resp = sqlCuenta.eliminarCuenta (pm, numeroUnico);
+            long resp = sqlCuentasJuridicas.eliminarCuenta (pm, numeroUnico);
             tx.commit();
 
             return resp;
@@ -369,14 +377,14 @@ public class PersistenciaBancAndes {
 	}
 
 	//dar cuenta por numeroUnico
-	public Cuenta darCuentaPorNumeroUnico (long numeroUnico) 
+	public CuentasJuridicas darCuentaPorNumeroUnico (long numeroUnico) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx=pm.currentTransaction();
 		try
 		{
 			tx.begin();
-			Cuenta resp = sqlCuenta.darCuentaPorNumeroUnico (pm, numeroUnico);
+			CuentasJuridicas resp = sqlCuentasJuridicas.darCuentaPorNumeroUnico (pm, numeroUnico);
 			tx.commit();
 
 			return resp;
@@ -424,14 +432,14 @@ public class PersistenciaBancAndes {
         }
 	}
 
-	public List <Cuenta> darCuentaParaCLiente(long numeroIDCliente){
+	public List <CuentasJuridicas> darCuentaParaCLiente(long numeroIDCliente){
 	
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx=pm.currentTransaction();
 		try
 		{
 			tx.begin();
-			List <Cuenta> resp = sqlCuenta.darCuentaParaCliente(pm, numeroIDCliente);
+			List <CuentasJuridicas> resp = sqlCuentasJuridicas.darCuentaParaCliente(pm, numeroIDCliente);
 			tx.commit();
 
 			return resp;
@@ -451,6 +459,62 @@ public class PersistenciaBancAndes {
 			pm.close();
 			}
 		}
+
+		//busca un cliente por su numeroId
+	 public Cliente darCliente(long numeroID) {
+	        PersistenceManager pm = pmf.getPersistenceManager();
+			Transaction tx=pm.currentTransaction();		
+	    try{
+			tx.begin();
+			Cliente resp = sqlCliente.buscarClientePorId(pm, numeroID);
+			tx.commit();
+			return resp;
+
+		}
+		catch (Exception e)
+		{
+//			e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return null;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+			}
+		}
+
+		// get the tipo de persona por su numeroId
+		public String darTipoPersona(long numeroID) {
+			PersistenceManager pm = pmf.getPersistenceManager();
+			Transaction tx=pm.currentTransaction();
+			try
+			{
+				tx.begin();
+				String resp = sqlCliente.darTipoPersona(pm, numeroID);
+				tx.commit();
+				return resp;
+
+			}
+			catch (Exception e)
+			{
+//				e.printStackTrace();
+				log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+				return null;
+			}
+			finally
+			{
+				if (tx.isActive())
+				{
+					tx.rollback();
+				}
+				pm.close();
+				}
+			}
+
 
 	
 	}

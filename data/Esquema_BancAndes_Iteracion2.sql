@@ -203,7 +203,7 @@ CHECK (tipoDocumentoAdministrador IN ('Registro civil', 'tarjeta de identidad', 
 
 
 
-CREATE TABLE CUENTA (
+CREATE TABLE CUENTASJURIDICAS (
 numeroUnico INT,
 tipoCuenta VARCHAR (255) NOT NULL,
 saldo INT NOT NULL,
@@ -234,11 +234,40 @@ ALTER TABLE CUENTA
 
 
 
+CREATE TABLE CUENTANATURAL (
+numeroUnicoNatural Number NOT NULL UNIQUE,
+numeroEmpleador INT ,
+tipoCuenta VARCHAR (255) NOT NULL,
+saldo Number NOT NULL,
+estado VARCHAR (255) NOT NULl,
+fechaCreacionCuenta DATE NOT NULL,
+fechaUltimoMovimiento DATE 
+valorAPagar Numer ,
+frecuenciaPago VARCHAR (255) ,
+fechaAsocioacionCuenta DATE ,
+);
+
+ALTER TABLE CUENTANATURAL
+ADD CONSTRAINT PK_CUENTANATURAL
+PRIMARY KEY (numeroUnicoNatural);
+
+ALTER TABLE CUENTANATURAL
+ADD CONSTRAINT CUENTASJURIDICAS_FK
+    FOREIGN KEY (numeroEmpleador)
+    REFERENCES CUENTASJURIDICAS(numeroUnico);
 
 
+ALTER TABLE CUENTANATURAL
+ADD CONSTRAINT CK_TIPO_CUENTA
+CHECK (tipoCuenta IN ('Ahorros', 'Corriente', 'AFC', 'CDT', 'Nomina' ));
 
+ALTER TABLE CUENTANATURAL
+ADD CONSTRAINT CK_ESTADO_CUENTA
+CHECK (estado IN ('Activa', 'Cerrada'));
 
-
+ALTER TABLE CUENTANATURAL
+ADD CONSTRAINT CK_FRECUENCIA_PAGO
+CHECK (frecuenciaPago IN ('mensual', 'Quincenal'));
 
 
 
@@ -466,3 +495,5 @@ CHECK (tipoOpePrestamo IN ('Abrir', 'Transferir', 'Cerrar', 'Consignar', 'Retira
     
 
     
+//RETORNA EL TIPO DE PERSONA POR idCliente
+SELECT tipoPersona FROM CLIENTE WHERE numeroId = ?;

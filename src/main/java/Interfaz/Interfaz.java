@@ -33,6 +33,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 
 import Negocio.BancAndes;
+import Negocio.VOCliente;
 import Negocio.VOCuenta;
 import Negocio.VOOficina;
 import Negocio.VOPrestamo;
@@ -287,8 +288,7 @@ public class Interfaz extends JFrame implements ActionListener{
 	    		{
 	    			int saldo = Integer.valueOf (saldoSrt);
 	    			long numeroIDCliente = Long.valueOf (numeroIDClienteSrt);	    			
-
-	        		VOCuenta tb = bancAndes.adicionarCuenta (tipoCuenta,saldo,numeroIDCliente);
+	        		VOCuenta tb = bancAndes.adicionarCuentaJuridica (tipoCuenta,saldo,numeroIDCliente);
 	        		if (tb == null)
 	        		{
 	        			throw new Exception ("No se pudo agregar la cuenta: " );
@@ -396,7 +396,7 @@ public class Interfaz extends JFrame implements ActionListener{
 	    		if (numeroUnicoStr != null)
 	    		{
 	    			long numeroUnico = Long.valueOf (numeroUnicoStr);    		
-	    			long tbEliminados = bancAndes.eliminarCuenta (numeroUnico);
+	    			long tbEliminados = bancAndes.eliminarCuentaJuridica (numeroUnico);
 	    			String resultado = "En cerrar Cuenta\n\n";
 	    			resultado += tbEliminados + " cuenta cerrada\n";
 	    			resultado += "\n Operaci�n terminada";
@@ -465,6 +465,61 @@ public class Interfaz extends JFrame implements ActionListener{
 		panelDatos.actualizarInterfaz(resultado);
 	}
 	}
+
+	public void darClientes (){
+		try {
+			String idClienteStr = JOptionPane.showInputDialog (this, "Id del cliente?", "Dar cliente", JOptionPane.QUESTION_MESSAGE);
+			if (idClienteStr != null)
+			{
+				long idCliente = Long.valueOf (idClienteStr);    		
+				VOCliente cliente = bancAndes.darClientePorNumero (idCliente);
+				String resultado = "En dar cliente\n\n";
+				resultado += "\n " +  cliente + " cliente encontrado\n";
+				resultado += "\n Operaci�n terminada";
+				panelDatos.actualizarInterfaz(resultado);
+			}
+			else
+			{
+				panelDatos.actualizarInterfaz("Operaci�n cancelada por el usuario");
+			}
+
+		}catch (Exception e) {
+			
+			e.printStackTrace();
+			String resultado = generarMensajeError(e);
+		}
+	}
+
+
+
+
+
+	//dar tipoPersona por su id
+	public void darTipoPersona (){
+		try {
+			String idTipoPersonaStr = JOptionPane.showInputDialog (this, "Id del tipo de persona?", "Dar tipo de persona", JOptionPane.QUESTION_MESSAGE);
+			if (idTipoPersonaStr != null){
+				long idTipoPersona = Long.valueOf (idTipoPersonaStr);    		
+				String tipoPersona = bancAndes.darTipoPersona (idTipoPersona);
+				String resultado = "En dar tipo de persona\n\n";
+				resultado += "\n " +  tipoPersona + " tipo de persona encontrado\n";
+				resultado += "\n Operaci�n terminada";
+				panelDatos.actualizarInterfaz(resultado);
+			}
+			else
+			{
+				panelDatos.actualizarInterfaz("Operaci�n cancelada por el usuario");
+			}
+			
+		} catch (Exception e) {
+			//e.printStackTrace();
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+		}
+
+
+
 
 
 	   

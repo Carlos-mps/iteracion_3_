@@ -10,7 +10,7 @@
 			[
 				{
 					"label": "AdicionarUsuario",
-					"event": "adicionarUsuario"
+					"event": "AdicionarUsuario"
 				}
 			]
 		},
@@ -68,15 +68,36 @@
 				}
 			]
 		},
-		{"menuTitle": "REQC1",
-		"options":
-		[
-			{
-				"label": "consultarCuenta",
-				"event": "darCuentaParaCliente"
-			}
-		]
-	}
+		{	"menuTitle": "REQC1",
+			"options":
+			[
+				{
+					"label": "consultarCuenta",
+					"event": "darClientes"
+				}
+			]
+		},
+		{
+			"menuTitle": "REQC2",
+			"options":
+			[
+				{
+					"label": "consultarCliente",
+					"event": "darClientes"
+				}
+			]
+		},
+		{
+			"menuTitle": "REQC3",
+			"options":
+			[
+				{
+					"label": "tipoCliente",
+					"event": "darTipoPersona"
+				}
+			]
+		}
+		
 	]
 }
 	

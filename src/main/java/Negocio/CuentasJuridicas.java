@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 
 import jdk.jfr.Timespan;
 
-public class Cuenta  implements VOCuenta{
+public class CuentasJuridicas  implements VOCuenta{
 
 	private long numeroUnico;
 	
@@ -27,7 +27,7 @@ public class Cuenta  implements VOCuenta{
 	
 	
 	
-	public Cuenta() {
+	public CuentasJuridicas() {
 		this.numeroUnico = 0;
 		this.tipoCuenta = "";
 		this.saldo = 0;
@@ -39,7 +39,7 @@ public class Cuenta  implements VOCuenta{
 		
 	}
 	
-	public Cuenta (long numeroUnico, String tipoCuenta, int saldo, String estado, long numeroIdCliente, Timestamp fechaCreacionCuenta, Timestamp fechaUltimoMovimiento ) {
+	public CuentasJuridicas (long numeroUnico, String tipoCuenta, int saldo, String estado, long numeroIdCliente, Timestamp fechaCreacionCuenta, Timestamp fechaUltimoMovimiento ) {
 		this.numeroUnico = numeroUnico;
 		this.tipoCuenta = tipoCuenta;
 		this.saldo = saldo;
@@ -49,12 +49,13 @@ public class Cuenta  implements VOCuenta{
 		this.fechaUltimoMovimiento =  fechaUltimoMovimiento;
 	}
 	
-	public Cuenta (long numeroUnico, String tipoCuenta, int saldo, String estado, long numeroIdCliente ) {
+	public CuentasJuridicas (long numeroUnico, String tipoCuenta, int saldo, String estado, long numeroIdCliente ) {
 		this.numeroUnico = numeroUnico;
 		this.tipoCuenta = tipoCuenta;
 		this.saldo = saldo;
 		this.estado = estado;
 		this.numeroIdCliente = numeroIdCliente; 	
+		
 	
 	}
 

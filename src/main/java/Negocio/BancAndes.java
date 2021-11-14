@@ -39,10 +39,10 @@ public class BancAndes {
 	}
 
 	
-	public Cuenta adicionarCuenta(String tipoCuenta , int saldo  , long numeroIDCliente )
+	public CuentasJuridicas adicionarCuentaJuridica(String tipoCuenta , int saldo  , long numeroIDCliente )
 	{
         log.info ("Adicionando cuenta: " );
-        Cuenta cuenta = pp.adicionarCuenta (tipoCuenta ,saldo ,numeroIDCliente);
+        CuentasJuridicas cuenta = pp.adicionarCuentaJuridica (tipoCuenta ,saldo ,numeroIDCliente);
         log.info ("Adicionando cuenta: " + cuenta);
         return cuenta;
 	}
@@ -73,20 +73,20 @@ public class BancAndes {
 	}
 	
 	// dar cuenta por numero numeroUnico
-	public Cuenta darCuentaPorNumero(long numeroUnico)
+	public CuentasJuridicas darCuentaPorNumero(long numeroUnico)
 	{
 		log.info ("Buscando cuenta por numero: " + numeroUnico);
-		Cuenta cuenta = pp.darCuentaPorNumeroUnico (numeroUnico);
+		CuentasJuridicas cuenta = pp.darCuentaPorNumeroUnico (numeroUnico);
 		log.info ("Buscando cuenta por numero: " + cuenta);
 		return cuenta;
 	}
 
 	
 	
-	public long eliminarCuenta (long numeroUnico)
+	public long eliminarCuentaJuridica (long numeroUnico)
 	{
         log.info ("Eliminando cuenta por id: " + numeroUnico);
-        long resp = pp.eliminarCuenta (numeroUnico);
+        long resp = pp.eliminarCuentaJuridica (numeroUnico);
         log.info ("Eliminando cuenta por Id: " + resp );
         return resp;
 	}
@@ -102,12 +102,27 @@ public List <VOCuenta> darCuentaParaCliente (long numeroIDCliente)
 {
 	log.info ("Buscando cuentas...");
 	List <VOCuenta> cuentas = new LinkedList <VOCuenta> ();
-	for (Cuenta cuenta : pp.darCuentaParaCLiente (numeroIDCliente))
+	for (CuentasJuridicas cuenta : pp.darCuentaParaCLiente (numeroIDCliente))
 	{
 		cuentas.add (cuenta);
 	}
 	log.info ("obteniendo cuentas: " + cuentas.size());
 	return cuentas;
 }
+public Cliente darClientePorNumero (long numeroIDCliente)
+{
+	log.info ("Buscando cliente por numero: " + numeroIDCliente);
+	Cliente cliente = pp.darCliente (numeroIDCliente);
+	log.info ("Buscando cliente por numero: " + cliente);
+	return cliente;
 
+}
+
+public String darTipoPersona (long numeroId)
+{
+	log.info ("Buscando tipo de persona por numero: " + numeroId);
+	String tipo = pp.darTipoPersona (numeroId);
+	log.info ("Buscando tipo de persona por numero: " + tipo);
+	return tipo;
+}
 }
