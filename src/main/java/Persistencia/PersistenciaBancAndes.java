@@ -18,6 +18,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import Negocio.Cliente;
+import Negocio.CuentaNatural;
 import Negocio.CuentasJuridicas;
 import Negocio.Oficina;
 import Negocio.Prestamo;
@@ -51,6 +52,7 @@ public class PersistenciaBancAndes {
 	private SQLPuntoDeAtencion sqlPuntoDeAtencion;
 	private SQLPrestamo sqlPrestamo;
 	private SQLCliente sqlCliente;
+	private SQLCuentaNatural sqlCuentaNatural;
 	
 	private PersistenciaBancAndes (){
 		
@@ -74,6 +76,7 @@ public class PersistenciaBancAndes {
 		tablas.add ("PRESTAMO");
 		tablas.add ("CUOTAMINIMAPRESTAMO");
 		tablas.add ("OPERACIONPRESTAMO");
+		tablas.add ("CUENTANATURAL");
 		
 		
 	}
@@ -137,7 +140,7 @@ public class PersistenciaBancAndes {
 		sqlPuntoDeAtencion = new SQLPuntoDeAtencion(this);
 		sqlPrestamo = new SQLPrestamo(this);
 		sqlCliente = new SQLCliente(this);
-		
+		sqlCuentaNatural = new SQLCuentaNatural(this);
 	}
 	
 	public String darSeqBancAndes ()
@@ -172,6 +175,12 @@ public class PersistenciaBancAndes {
 	{
 		return tablas.get (6);
 	}
+	
+	public String darTablaCuentaNatural () {
+		return tablas.get(17);
+	}
+	
+	
 	private long nextval ()
 	{
         long resp = sqlUtil.nextval (pmf.getPersistenceManager());
@@ -265,6 +274,39 @@ public class PersistenciaBancAndes {
             log.trace ("Inserci�n de Cuenta: " + numeroUnicoA + ": " + tuplasInsertadas + " tuplas insertadas");
             
             return new CuentasJuridicas (numeroUnicoA, tipoCuenta, saldo, activa, numeroIDCliente);
+        }
+        catch (Exception e)
+        {
+//        	e.printStackTrace();
+        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+        	return null;
+        }
+        finally
+        {
+            if (tx.isActive())
+            {
+                tx.rollback();
+            }
+            pm.close();
+        }
+	}
+	
+	public CuentaNatural adicionarCuentaNatural(  String tipoCuenta , int saldo  , long numeroIDCliente  ) 
+	{
+		PersistenceManager pm = pmf.getPersistenceManager();
+        Transaction tx=pm.currentTransaction();
+        try
+        {
+            tx.begin(); 
+            long numeroUnicoNatural =  nextval ();
+            String activa = "Activa";            
+            long tuplasInsertadas = sqlCuentaNatural.adicionarCuentaNatural(pm, numeroUnicoNatural, tipoCuenta, saldo, activa, numeroIDCliente);
+            
+            tx.commit();
+
+            log.trace ("Inserci�n de Cuenta: " + numeroUnicoNatural + ": " + tuplasInsertadas + " tuplas insertadas");
+            
+            return new CuentaNatural (numeroUnicoNatural, tipoCuenta, saldo, activa, numeroIDCliente);
         }
         catch (Exception e)
         {

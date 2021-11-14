@@ -35,6 +35,7 @@ import com.google.gson.stream.JsonReader;
 import Negocio.BancAndes;
 import Negocio.VOCliente;
 import Negocio.VOCuenta;
+import Negocio.VOCuentaNatural;
 import Negocio.VOOficina;
 import Negocio.VOPrestamo;
 import Negocio.VOPuntoDeAtencion;
@@ -288,7 +289,12 @@ public class Interfaz extends JFrame implements ActionListener{
 	    		{
 	    			int saldo = Integer.valueOf (saldoSrt);
 	    			long numeroIDCliente = Long.valueOf (numeroIDClienteSrt);	    			
+	        		
+	        		
+	        	if (bancAndes.darTipoPersona (numeroIDCliente).equals("Juridica")) {
 	        		VOCuenta tb = bancAndes.adicionarCuentaJuridica (tipoCuenta,saldo,numeroIDCliente);
+	        	
+	        	
 	        		if (tb == null)
 	        		{
 	        			throw new Exception ("No se pudo agregar la cuenta: " );
@@ -298,10 +304,23 @@ public class Interfaz extends JFrame implements ActionListener{
 	    			resultado += "\n Operaci�n terminada";
 	    			panelDatos.actualizarInterfaz(resultado);
 	    		}
+	        	else if (bancAndes.darTipoPersona (numeroIDCliente).equals("Natural")) {
+	        		VOCuentaNatural tb = bancAndes.adicionarCuentaNatural (tipoCuenta,saldo,numeroIDCliente);
+	        		
+	        		if (tb == null)
+	        		{
+	        			throw new Exception ("No se pudo agregar la cuenta: " );
+	        		}
+	        		String resultado = "En adicionarCuenta\n\n";
+	        		resultado += "Cuenta adicionada exitosamente: " + tb;
+	    			resultado += "\n Operaci�n terminada";
+	    			panelDatos.actualizarInterfaz(resultado);
+	        	}
 	    		else
 	    		{
 	    			panelDatos.actualizarInterfaz("Operaci�n cancelada ");
 	    		}
+	    }
 			} 
 	    	catch (Exception e) 
 	    	{

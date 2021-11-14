@@ -46,6 +46,14 @@ public class BancAndes {
         log.info ("Adicionando cuenta: " + cuenta);
         return cuenta;
 	}
+	
+	public CuentaNatural adicionarCuentaNatural(String tipoCuenta , int saldo  , long numeroIDCliente )
+	{
+        log.info ("Adicionando cuenta: " );
+        CuentaNatural cuenta = pp.adicionarCuentaNatural (tipoCuenta ,saldo ,numeroIDCliente);
+        log.info ("Adicionando cuenta: " + cuenta);
+        return cuenta;
+	}
 	public Prestamo adicionarPrestamo(  long monto, long interes, int numCuotas,int diaPago,  String tipoPrestamo, long idCliente )
 	{
         log.info ("Adicionando prestamo: " );
