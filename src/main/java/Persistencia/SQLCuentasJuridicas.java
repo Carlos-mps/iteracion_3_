@@ -1,11 +1,9 @@
 package Persistencia;
-import Negocio.CuentasJuridicas;
-
-import java.util.List;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
+import Negocio.CuentasJuridicas;
 
 class SQLCuentasJuridicas {
 	 

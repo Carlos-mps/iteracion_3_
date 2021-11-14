@@ -152,6 +152,10 @@ public class PersistenciaBancAndes {
 	{
 		return tablas.get (1);
 	}
+	public String darTablaEmpleado()
+	{
+		return tablas.get (2);
+	}
 	
 	public String darTablaOficina ()
 	{
