@@ -96,7 +96,18 @@
 					"event": "darTipoPersona"
 				}
 			]
+		},
+		{
+			"menuTitle": "REQC4",
+			"options":
+			[
+				{
+					"label": "tipoEmpleado",
+					"event": "darTipoEmpleadoPorId"
+				}
+			]
 		}
+	
 		
 	]
 }

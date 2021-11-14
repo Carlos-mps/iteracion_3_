@@ -510,9 +510,31 @@ public class Interfaz extends JFrame implements ActionListener{
 	}
 
 
+	//dar tipoEmpleado por su id
+	public void darTipoEmpleadoPorId (){
+		try { 
+			String idTipoEmpleadoStr = JOptionPane.showInputDialog (this, "Id del tipo de empleado?", "Dar tipo de empleado", JOptionPane.QUESTION_MESSAGE);
+			if (idTipoEmpleadoStr != null)
+			{
+				long idTipoEmpleado = Long.valueOf (idTipoEmpleadoStr);    		
+				String tipoEmpleado = bancAndes.buscarTipoEmpleado(idTipoEmpleado);
+				String resultado = "En dar tipo de empleado\n\n";
+				resultado += "\n " +  tipoEmpleado + " tipo de empleado encontrado\n";
+				resultado += "\n Operaci�n terminada";
+				panelDatos.actualizarInterfaz(resultado);
+			}
+			else
+			{
+				panelDatos.actualizarInterfaz("Operaci�n cancelada por el usuario");
+			}
+		}catch (Exception e) {
+			
+			e.printStackTrace();
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
 
-
-
+	}
 	//dar tipoPersona por su id
 	public void darTipoPersona (){
 		try {
@@ -553,6 +575,8 @@ public class Interfaz extends JFrame implements ActionListener{
 			panelDatos.actualizarInterfaz(resultado);
 		}
 	}
+
+
 
 
 

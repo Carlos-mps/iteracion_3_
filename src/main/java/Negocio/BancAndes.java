@@ -134,6 +134,13 @@ public String darTipoPersona (long numeroId)
 	return tipo;
 }
 
+public String buscarTipoEmpleado (long numeroId)
+{
+	log.info ("Buscando tipo de empleado por numero: " + numeroId);
+	String tipo = pp.buscarTipoEmpleadoId(numeroId);
+	log.info ("Buscando tipo de empleado por numero: " + tipo);
+	return tipo;
+}
 
 public List <Prestamo> darPrestamosGerenteGeneral ()
 {

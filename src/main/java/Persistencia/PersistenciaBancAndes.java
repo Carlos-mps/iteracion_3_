@@ -53,7 +53,7 @@ public class PersistenciaBancAndes {
 	private SQLPrestamo sqlPrestamo;
 	private SQLCliente sqlCliente;
 	private SQLCuentaNatural sqlCuentaNatural;
-	
+	private SQLEmpleado sqlEmpleado;
 	private PersistenciaBancAndes (){
 		
 		pmf = JDOHelper.getPersistenceManagerFactory("bancAndes");		
@@ -141,6 +141,7 @@ public class PersistenciaBancAndes {
 		sqlPrestamo = new SQLPrestamo(this);
 		sqlCliente = new SQLCliente(this);
 		sqlCuentaNatural = new SQLCuentaNatural(this);
+		sqlEmpleado = new SQLEmpleado(this);
 	}
 	
 	public String darSeqBancAndes ()
@@ -151,6 +152,10 @@ public class PersistenciaBancAndes {
 	public String darTablaUsuario ()
 	{
 		return tablas.get (1);
+	}
+	public String darTablaEmpleado()
+	{
+		return tablas.get (2);
 	}
 	
 	public String darTablaOficina ()
@@ -554,6 +559,35 @@ public class PersistenciaBancAndes {
 					tx.rollback();
 				}
 				pm.close();
+				}
+			}
+
+			//get the tipo de empleado por su numeroId
+			public String buscarTipoEmpleadoId(Long numeroId)
+			{
+				PersistenceManager pm = pmf.getPersistenceManager();
+				Transaction tx = pm.currentTransaction();
+				try
+				{
+					tx.begin();
+					String resp = sqlEmpleado.buscarTipoEmpleadoPorId(pm, numeroId);
+					tx.commit();
+					
+					return resp;
+				}
+				catch (Exception e)
+				{
+//					e.printStackTrace();
+					log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+					return null;
+				}
+				finally
+				{
+					if (tx.isActive())
+					{
+						tx.rollback();
+					}
+					pm.close();
 				}
 			}
 

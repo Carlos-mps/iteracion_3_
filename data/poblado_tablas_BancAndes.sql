@@ -69,3 +69,10 @@ VALUES(65,235698,2,65,5,'Activo','Libre inversion', 268754);
 
 INSERT INTO OPERACIONPRESTAMO (idoperacionprestamo,tipoopeprestamo,idprestamo,valorpagado)
 VALUES (89,'Consignar',65,32000 );
+
+
+//consultar un prestamo por id
+SELECT * 
+FROM PRESTAMO 
+WHERE id = 65 
+AND ;
