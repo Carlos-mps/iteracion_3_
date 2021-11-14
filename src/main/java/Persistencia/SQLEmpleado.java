@@ -5,6 +5,7 @@ import javax.jdo.Query;
 
 import Negocio.Cliente;
 import Negocio.Empleado;
+import Negocio.VOEmpleado;
 
 public class SQLEmpleado {
 	private final static String SQL = PersistenciaBancAndes.SQL;
@@ -17,10 +18,9 @@ public class SQLEmpleado {
 	}
 	public String buscarTipoEmpleadoPorId (PersistenceManager pm, long numeroId) 
 	{
-	    Query q = pm.newQuery(SQL, "SELECT TIPOEMPLEADO FROM " + pp.darTablaEmpleado() + " WHERE NUMEROID = ?");
-	    q.setResultClass(Empleado.class);
+	    Query q = pm.newQuery(SQL, "SELECT TIPOEMPLEADO FROM " + pp.darTablaEmpleado() + " WHERE NUMEROID = ?");	  
 	    q.setParameters(numeroId);
-	    return (String) q.executeUnique();
+	    return (String) q.executeUnique().toString();	
 
 
 

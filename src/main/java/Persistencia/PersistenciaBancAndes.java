@@ -12,6 +12,7 @@ import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Transaction;
 
 import org.apache.log4j.Logger;
+import org.apache.log4j.BasicConfigurator;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -55,7 +56,7 @@ public class PersistenciaBancAndes {
 	private SQLCuentaNatural sqlCuentaNatural;
 	private SQLEmpleado sqlEmpleado;
 	private PersistenciaBancAndes (){
-		
+		BasicConfigurator.configure();
 		pmf = JDOHelper.getPersistenceManagerFactory("bancAndes");		
 		crearClasesSQL ();		
 		tablas = new LinkedList<String> ();
@@ -82,7 +83,7 @@ public class PersistenciaBancAndes {
 	}
 	
 	private PersistenciaBancAndes (JsonObject tableConfig) {
-		
+		BasicConfigurator.configure();
 		crearClasesSQL ();
 		tablas = leerNombresTablas (tableConfig);
 		
