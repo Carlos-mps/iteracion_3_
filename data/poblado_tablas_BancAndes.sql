@@ -29,6 +29,7 @@ VALUES ('215465', 'Pasaporte');
 INSERT INTO ADMINISTRADOR (NUMEROIDADIMINISTRADOR, tipodocumentoadministrador) 
 VALUES ('365452', 'cedula de ciudadania');
 
+INSERT INTO CUENTANATURAL ()
 
 
 INSERT INTO EMPLEADO (numeroid, tipoempleado, tipodocumentousuario) VALUES (656585, 'Cajero', 'cedula de ciudadania' );

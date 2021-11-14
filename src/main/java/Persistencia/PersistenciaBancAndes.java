@@ -558,6 +558,38 @@ public class PersistenciaBancAndes {
 			}
 
 
+			//get the prestamo por su numeroId
+			public List<Prestamo> darPrestamosGerenteGeneral (){
+				PersistenceManager pm = pmf.getPersistenceManager();
+				Transaction tx=pm.currentTransaction();
+				try
+				{
+					tx.begin();
+					List<Prestamo> resp = sqlPrestamo.darPrestamosGerenteGeneral(pm);
+					tx.commit();
+					return resp;
+
+				}
+				catch (Exception e)
+				{
+//					e.printStackTrace();
+					log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+					return null;
+				}
+				finally
+				{
+					if (tx.isActive())
+					{
+						tx.rollback();
+					}
+					pm.close();
+					
+				}
+			}
+
+			
+
+
 	
 	}
 

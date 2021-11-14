@@ -537,6 +537,23 @@ public class Interfaz extends JFrame implements ActionListener{
 		}
 		}
 
+	public void darPrestamosGerenteGeneral ()
+	{
+		try
+		{
+			String tipoUsuario = JOptionPane.showInputDialog (this, "como desea ingresar? empleado o cliente", "Dar tipo persona", JOptionPane.QUESTION_MESSAGE);
+			String numDocumento = JOptionPane.showInputDialog (this, "numero de documento?", "Dar numero documento", JOptionPane.QUESTION_MESSAGE);
+			if (tipoUsuario.equals("empleado")){
+
+			}
+
+		}catch (Exception e) {
+			//e.printStackTrace();
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+
 
 
 

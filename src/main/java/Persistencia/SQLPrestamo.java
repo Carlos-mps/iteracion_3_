@@ -1,7 +1,11 @@
 package Persistencia;
 
+import java.util.List;
+
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
+
+import Negocio.Prestamo;
 
 class SQLPrestamo {
 	
@@ -30,5 +34,20 @@ class SQLPrestamo {
 	        return (long) q.executeUnique();
 	        
 		}
+
+	public List <Prestamo> darPrestamosGerenteGeneral (PersistenceManager pm)
+	{
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + pp.darTablaPrestamo () );
+		q.setResultClass(SQLPrestamo.class);
+		return q.executeList();
+	}
+
+	public List <Prestamo> darPrestamosCliente (PersistenceManager pm, long idCliente)
+	{
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + pp.darTablaPrestamo () + " WHERE IDCLIENTE = ?");
+		q.setResultClass(SQLPrestamo.class);
+		q.setParameters(idCliente);
+		return q.executeList();
+	}
 
 }

@@ -13,7 +13,7 @@ public class CuentaNatural implements VOCuentaNatural {
 	private Timestamp fechaUltimoMovimiento; 
 	private int valorAPagar;
 	private String frecuenciaPago;
-	private Timestamp fechaAsocioacionCuenta;
+	private Timestamp fechaAsociacionCuenta;
 	private long numeroIdCliente;
 	
 	
@@ -27,11 +27,11 @@ public CuentaNatural () {
 	this.fechaUltimoMovimiento = new Timestamp(0);
 	this.valorAPagar = 0;
 	this.frecuenciaPago = "";
-	this.fechaAsocioacionCuenta = new Timestamp(0);
+	this.fechaAsociacionCuenta = new Timestamp(0);
 	this.numeroIdCliente = 0;
 }
 
-public CuentaNatural (long numeroUnicoNatural,long numeroEmpleador, String tipoCuenta,int saldo,String estado, Timestamp fechaCreacionCuenta, Timestamp fechaUltimoMovimiento,int valorAPagar, String frecuenciaPago,Timestamp fechaAsocioacionCuenta, long numeroIdCliente  )
+public CuentaNatural (long numeroUnicoNatural,long numeroEmpleador, String tipoCuenta,int saldo,String estado, Timestamp fechaCreacionCuenta, Timestamp fechaUltimoMovimiento,int valorAPagar, String frecuenciaPago,Timestamp fechaAsociacionCuenta, long numeroIdCliente  )
 {
 	this.numeroUnicoNatural = numeroUnicoNatural;
 	this.numeroEmpleador = numeroEmpleador;
@@ -42,7 +42,7 @@ public CuentaNatural (long numeroUnicoNatural,long numeroEmpleador, String tipoC
 	this.fechaUltimoMovimiento = fechaUltimoMovimiento;
 	this.valorAPagar = valorAPagar;
 	this.frecuenciaPago = frecuenciaPago;
-	this.fechaAsocioacionCuenta = fechaAsocioacionCuenta;
+	this.fechaAsociacionCuenta = fechaAsociacionCuenta;
 	this.numeroIdCliente = numeroIdCliente;
 }
 
@@ -108,11 +108,11 @@ public String getFrecuenciaPago() {
 public void setFrecuenciaPago(String frecuenciaPago) {
 	this.frecuenciaPago = frecuenciaPago;
 }
-public Timestamp getFechaAsocioacionCuenta() {
-	return fechaAsocioacionCuenta;
+public Timestamp getFechaAscioacionCuenta() {
+	return fechaAsociacionCuenta;
 }
-public void setFechaAsocioacionCuenta(Timestamp fechaAsocioacionCuenta) {
-	this.fechaAsocioacionCuenta = fechaAsocioacionCuenta;
+public void setFechaAscioacionCuenta(Timestamp fechaAsocioacionCuenta) {
+	this.fechaAsociacionCuenta = fechaAsocioacionCuenta;
 }
 
 public long  getNumeroIdCliente () {
@@ -127,7 +127,7 @@ public String toString() {
 	return "CuentaNatural [numeroUnicoNatural=" + numeroUnicoNatural + ", numeroEmpleador=" + numeroEmpleador
 			+ ", tipoCuenta=" + tipoCuenta + ", saldo=" + saldo + ", estado=" + estado + ", fechaCreacionCuenta="
 			+ fechaCreacionCuenta + ", fechaUltimoMovimiento=" + fechaUltimoMovimiento + ", valorAPagar=" + valorAPagar
-			+ ", frecuenciaPago=" + frecuenciaPago + ", fechaAsocioacionCuenta=" + fechaAsocioacionCuenta + "]";
+			+ ", frecuenciaPago=" + frecuenciaPago + ", fechaAsocioacionCuenta=" + fechaAsociacionCuenta + "]";
 }
 
 

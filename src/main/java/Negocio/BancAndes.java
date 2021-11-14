@@ -133,4 +133,17 @@ public String darTipoPersona (long numeroId)
 	log.info ("Buscando tipo de persona por numero: " + tipo);
 	return tipo;
 }
+
+
+public List <Prestamo> darPrestamosGerenteGeneral ()
+{
+	log.info ("Buscando prestamos...");
+	List <Prestamo> prestamos = new LinkedList <Prestamo> ();
+	for (Prestamo prestamo : pp.darPrestamosGerenteGeneral ())
+	{
+		prestamos.add (prestamo);
+	}
+	log.info ("obteniendo prestamos: " + prestamos.size());
+	return prestamos;
+}
 }

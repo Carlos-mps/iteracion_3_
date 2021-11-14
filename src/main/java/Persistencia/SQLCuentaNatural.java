@@ -25,6 +25,10 @@ public class SQLCuentaNatural {
 	        return (long) q.executeUnique();
 	        
 		} 
+
+	
+
+	
 	 
 	 
 	

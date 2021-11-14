@@ -22,7 +22,7 @@ public interface VOCuentaNatural {
 
     public String getFrecuenciaPago();
 
-    public Timestamp getFechaAsocioacionCuenta();
+    public Timestamp getFechaAscioacionCuenta();
 
     public long getNumeroIdCliente();
 	
