@@ -142,15 +142,11 @@ public String buscarTipoEmpleado (long numeroId)
 	return tipo;
 }
 
-public List <Prestamo> darPrestamosGerenteGeneral ()
-{
-	log.info ("Buscando prestamos...");
-	List <Prestamo> prestamos = new LinkedList <Prestamo> ();
-	for (Prestamo prestamo : pp.darPrestamosGerenteGeneral ())
-	{
-		prestamos.add (prestamo);
-	}
-	log.info ("obteniendo prestamos: " + prestamos.size());
-	return prestamos;
+public List <Prestamo> darPrestamos (){
+	log.info ("Buscando Prestamos");
+	return pp.darPrestamos();
 }
+
+
+
 }

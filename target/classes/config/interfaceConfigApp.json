@@ -102,8 +102,8 @@
 			"options":
 			[
 				{
-					"label": "tipoEmpleado",
-					"event": "darTipoEmpleadoPorId"
+					"label": "darPrestamo",
+					"event": "darPrestamosGerenteGeneral"
 				}
 			]
 		}

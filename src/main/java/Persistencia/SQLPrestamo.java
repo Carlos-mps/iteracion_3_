@@ -1,9 +1,12 @@
 package Persistencia;
 
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
+import javax.naming.spi.DirStateFactory.Result;
 
 import Negocio.Prestamo;
 
@@ -37,9 +40,10 @@ class SQLPrestamo {
 
 	public List <Prestamo> darPrestamosGerenteGeneral (PersistenceManager pm)
 	{
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + pp.darTablaPrestamo () );
-		q.setResultClass(SQLPrestamo.class);
-		return q.executeList();
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + pp.darTablaPrestamo ()  );
+		q.setResultClass(Prestamo.class);
+		return (List<Prestamo>) q.executeList();
+		
 	}
 
 	public List <Prestamo> darPrestamosCliente (PersistenceManager pm, long idCliente)

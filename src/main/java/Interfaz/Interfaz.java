@@ -33,6 +33,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 
 import Negocio.BancAndes;
+import Negocio.Prestamo;
 import Negocio.VOCliente;
 import Negocio.VOCuenta;
 import Negocio.VOCuentaNatural;
@@ -559,22 +560,16 @@ public class Interfaz extends JFrame implements ActionListener{
 		}
 		}
 
-	public void darPrestamosGerenteGeneral ()
+	public List <Prestamo> darPrestamosGerenteGeneral ()
 	{
-		try
-		{
-			String tipoUsuario = JOptionPane.showInputDialog (this, "como desea ingresar? empleado o cliente", "Dar tipo persona", JOptionPane.QUESTION_MESSAGE);
-			String numDocumento = JOptionPane.showInputDialog (this, "numero de documento?", "Dar numero documento", JOptionPane.QUESTION_MESSAGE);
-			if (tipoUsuario.equals("empleado")){
+		
+			List <Prestamo> lista = bancAndes.darPrestamos();
+			return lista;
+		
 
-			}
-
-		}catch (Exception e) {
-			//e.printStackTrace();
-			String resultado = generarMensajeError(e);
-			panelDatos.actualizarInterfaz(resultado);
-		}
+		
 	}
+
 
 
 
