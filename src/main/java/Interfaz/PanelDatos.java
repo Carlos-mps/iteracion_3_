@@ -26,5 +26,15 @@ public class PanelDatos extends JPanel{
 	    {
 	    	textArea.setText(texto);
 	    }
+	  
+	  public void actualizarInterfaz2 (String texto)
+	    {
+		  //JTextArea textArea2 =  new JTextArea("Aqu� sale el resultado de las operaciones solicitadas");
+		  //textArea2.setEditable(false);
+			//add (new JScrollPane(textArea2), BorderLayout.CENTER);
+			textArea.append("\n " + texto + "\n");
+	    	//textArea2.setText(texto);
+	    }
+
 
 }

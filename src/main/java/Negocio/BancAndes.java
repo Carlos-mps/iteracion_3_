@@ -1,5 +1,6 @@
 package Negocio;
 
+import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -54,7 +55,7 @@ public class BancAndes {
         log.info ("Adicionando cuenta: " + cuenta);
         return cuenta;
 	}
-	public Prestamo adicionarPrestamo(  long monto, long interes, int numCuotas,int diaPago,  String tipoPrestamo, long idCliente )
+	public Prestamo adicionarPrestamo(  BigDecimal monto, BigDecimal interes, BigDecimal numCuotas,BigDecimal diaPago,  String tipoPrestamo, BigDecimal idCliente )
 	{
         log.info ("Adicionando prestamo: " );
         Prestamo prestamo = pp.adicionarPrestamo (monto, interes, numCuotas, diaPago,tipoPrestamo,idCliente);
@@ -145,6 +146,22 @@ public String buscarTipoEmpleado (long numeroId)
 public List <Prestamo> darPrestamos (){
 	log.info ("Buscando Prestamos");
 	return pp.darPrestamos();
+}
+public List <OperacionesBancarias> darOperacionesBancarias (){
+	log.info ("Buscando Operaciones Bancarias");
+	System.out.println("paso 2.1-------------------------------------------");
+	return pp.darOperacionesBancarias();
+}
+
+public List <OperacionesBancarias> darOperacionesCliente (BigDecimal numeroCuenta){
+	log.info ("Buscando Operaciones Bancarias");
+	System.out.println("paso 2.1-------------------------------------------");
+	return pp.darOperacionesCliente(numeroCuenta);
+}
+
+public List <Prestamo> darPrestamosCliente (BigDecimal numeroIDCDecimal){
+	log.info ("Buscando Prestamos");
+	return pp.darPrestamosCliente( numeroIDCDecimal);
 }
 
 

@@ -98,12 +98,22 @@
 			]
 		},
 		{
-			"menuTitle": "REQC4",
+			"menuTitle": "REC5",
 			"options":
 			[
 				{
 					"label": "darPrestamo",
 					"event": "darPrestamosGerenteGeneral"
+				}
+			]
+		},
+		{
+			"menuTitle": "REC6",
+			"options":
+			[
+				{
+					"label": "darOperaciones",
+					"event": "darOperacionesBancarias"
 				}
 			]
 		}

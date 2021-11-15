@@ -12,6 +12,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -33,6 +35,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 
 import Negocio.BancAndes;
+import Negocio.OperacionesBancarias;
 import Negocio.Prestamo;
 import Negocio.VOCliente;
 import Negocio.VOCuenta;
@@ -344,11 +347,11 @@ public class Interfaz extends JFrame implements ActionListener{
 	    			   		
 	    		if (montoSrt != null && interesSrt != null && numCuotasSrt!= null&& diaPagoSrt != null && tipoPrestamo != null && idClienteSrt!= null )
 	    		{
-	    			int numCuotas = Integer.valueOf (numCuotasSrt);
-	    			int diaPago = Integer.valueOf (diaPagoSrt);
-	    			long monto = Long.valueOf (montoSrt);	 
-	    			long interes = Long.valueOf (interesSrt);
-	    			long idCliente = Long.valueOf (idClienteSrt);
+	    			BigDecimal numCuotas = BigDecimal.valueOf(Integer.valueOf (numCuotasSrt));
+	    			BigDecimal diaPago = BigDecimal.valueOf(Integer.valueOf (diaPagoSrt));
+	    			BigDecimal monto = BigDecimal.valueOf(Long.valueOf (montoSrt)) ;	 
+	    			BigDecimal interes = BigDecimal.valueOf(Long.valueOf (interesSrt)); 
+	    			BigDecimal idCliente = BigDecimal.valueOf(Long.valueOf (idClienteSrt)) ;
 
 	        		VOPrestamo tb = bancAndes.adicionarPrestamo (monto,interes,numCuotas,diaPago,tipoPrestamo,idCliente);
 	        		if (tb == null)
@@ -562,12 +565,102 @@ public class Interfaz extends JFrame implements ActionListener{
 
 	public List <Prestamo> darPrestamosGerenteGeneral ()
 	{
+		String resultado = null;
 		
-			List <Prestamo> lista = bancAndes.darPrestamos();
+		List <Prestamo> lista = new LinkedList<>();
+		
+			String tipoUsuario = JOptionPane.showInputDialog(this, "Que persona es cliente o empleado?", "dar tipo Usuario", JOptionPane.QUESTION_MESSAGE);
+			
+		if (tipoUsuario.equals("empleado")) {
+		
+			String idEmpleado = JOptionPane.showInputDialog(this, "ingrese el numero de identificacion", "dar numero de documento", JOptionPane.QUESTION_MESSAGE);
+			
+				long idEmpleado2 = Long.valueOf(idEmpleado);
+				
+				String tipoEmpleado = bancAndes.buscarTipoEmpleado(idEmpleado2);
+				
+				
+		if (tipoEmpleado.equals("Gerente general")) {
+		
+			 lista = bancAndes.darPrestamos();
+			for (Prestamo a : lista) {
+				
+				resultado = "id: " +  a.getId().toString()+ " monto: " + a.getMonto().toString()+ " interes: " + a.getInteres().toString() + " numeroCuotas: " 
+						+ a.getNumCuotas().toString()+ " diaPago: " + a.getDiaPago().toString() + " estado: " + a.getEstado().toString() + " tipoPrestamo: " + a.getTipoPrestamo().toString()
+						+ " idCliente " + a.getIdCliente().toString() ;
+				panelDatos.actualizarInterfaz2(resultado);
+				
+			}
+		}
+		else {
+			panelDatos.actualizarInterfaz("no es un gerente");
+		}
+		
+		}
+		if (tipoUsuario.equals("cliente")) {
+		String idCliente = JOptionPane.showInputDialog(this, "ingrese el numero de identificacion", "dar numero de documento", JOptionPane.QUESTION_MESSAGE);
+		BigDecimal idCliente2 = BigDecimal.valueOf(Long.valueOf(idCliente));
+		lista = bancAndes.darPrestamosCliente(idCliente2);
+		for (Prestamo a : lista) {
+				
+			resultado = "id: " +  a.getId().toString()+ " monto: " + a.getMonto().toString()+ " interes: " + a.getInteres().toString() + " numeroCuotas: " 
+					+ a.getNumCuotas().toString()+ " diaPago: " + a.getDiaPago().toString() + " estado: " + a.getEstado().toString() + " tipoPrestamo: " + a.getTipoPrestamo().toString()
+					+ " idCliente " + a.getIdCliente().toString() ;
+			panelDatos.actualizarInterfaz2(resultado);
+			
+		}
+		}
+			
 			return lista;
-		
+	}
 
+	public List <OperacionesBancarias> darOperacionesBancarias (){
+		List <OperacionesBancarias> lista = new LinkedList<>();
+		String resultado = null;
+		String tipoUsuario = JOptionPane.showInputDialog(this, "Que persona es cliente o empleado?", "dar tipo Usuario", JOptionPane.QUESTION_MESSAGE);
+		if (tipoUsuario.equals("empleado")) {
+			String tipoEmpleado = JOptionPane.showInputDialog(this, "ingrese el numero de identificacion", "dar numero de documento", JOptionPane.QUESTION_MESSAGE);
+			long idEmpleado2 = Long.valueOf(tipoEmpleado);
+			String empleadoTipo = bancAndes.buscarTipoEmpleado(idEmpleado2);
+			if (empleadoTipo.equals("Gerente general")) {
+			
+		lista = bancAndes.darOperacionesBancarias();
+		resultado = " Bienvenido Gerente, Estos son los prestamos" ;
+		panelDatos.actualizarInterfaz(resultado);
+		for (OperacionesBancarias a : lista) {
+			
+			resultado = " id: " + a.getId().toString() + " valor: " + a.getValor().toString() + " fecha: " + a.getFechaHora().toString() + " numero cuenta: " + a.getNumeroCuenta();
+			panelDatos.actualizarInterfaz2(resultado);
+		}
+			}
+		}
+		else {
+			panelDatos.actualizarInterfaz("Operaci�n cancelada por el usuario");
+		}
 		
+		if (tipoUsuario.equals("cliente")) {
+			
+			String numCuenta = JOptionPane.showInputDialog(this, "ingrese su numero de cuenta", "dar numero de cuenta", JOptionPane.QUESTION_MESSAGE);
+			BigDecimal numCuenta2 = BigDecimal.valueOf(Long.valueOf(numCuenta));
+			lista = bancAndes.darOperacionesCliente(numCuenta2);
+			resultado = " Bienvenido Cliente, Estos son los prestamos" ;
+			panelDatos.actualizarInterfaz(resultado);
+			for (OperacionesBancarias a : lista) {
+			
+			resultado = " id: " + a.getId().toString() + " valor: " + a.getValor().toString() + " fecha: " + a.getFechaHora().toString() + " numero cuenta: " + a.getNumeroCuenta();
+			panelDatos.actualizarInterfaz2(resultado);
+		}
+			
+			
+		}else {
+			panelDatos.actualizarInterfaz("Operaci�n cancelada por el usuario");
+		}
+		
+		
+		
+		
+		return lista;
+
 	}
 
 

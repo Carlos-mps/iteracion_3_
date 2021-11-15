@@ -1,23 +1,24 @@
 package Negocio;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 public interface VOOperacionesBancarias {
 
-	public long getId ();
+	public BigDecimal getId ();
 	
-	public long getValor ();
+	public BigDecimal getValor ();
 	
 	public Timestamp getFechaHora ();
 	
-	public long getNumeroCuenta ();
+	public BigDecimal getNumeroCuenta ();
 	
 	public long getEmpleado ();
 	
 	public long getAdministrador ();
 	
-	@Override
-	public String toString ();
+	//@Override
+	//public String toString ();
 	
 	
 	

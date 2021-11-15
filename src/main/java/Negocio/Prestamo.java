@@ -1,37 +1,39 @@
 package Negocio;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 public class Prestamo implements VOPrestamo{
 	
 	
-	private long id;
-	private long monto;
-	private long interes;
-	private int numCuotas;
-	private int diaPago;
+	private BigDecimal id;
+	private BigDecimal monto;
+	private BigDecimal interes;
+	private BigDecimal numCuotas;
+	private BigDecimal diaPago;
 	private String estado;
 	private String tipoPrestamo;
-	private long idCliente;
+	private BigDecimal idCliente;
 	private String oficina;
 	
 	
 	
 	
 	public Prestamo() {
-		this.id = 0;
-		this.monto = 0;
-		this.interes = 0;
-		this.numCuotas = 0;
-		this.diaPago = 0;
+		this.id = new BigDecimal(0);
+		this.monto = new BigDecimal(0);
+		this.interes = new BigDecimal(0);
+		this.numCuotas = new BigDecimal(0);
+		this.diaPago = new BigDecimal(0);
 		this.estado = "";
 		this.tipoPrestamo = "";
-		this.idCliente = 0;
+		this.idCliente = new BigDecimal(0);
 		this.oficina = "";
+		
 	}
 	
 	
-	public Prestamo (long id, long monto, long interes, int numCuotas,int diaPago,String estado,  String tipoPrestamo, long idCliente, String oficina) {
+	public Prestamo (BigDecimal id, BigDecimal monto , BigDecimal interes , BigDecimal numCuotas , BigDecimal diaPago,String estado ,  String tipoPrestamo, BigDecimal idCliente, String oficina) {
 		this.id = id;
 		this.monto = monto;
 		this.interes = interes ;
@@ -41,9 +43,10 @@ public class Prestamo implements VOPrestamo{
 		this.tipoPrestamo = tipoPrestamo ;
 		this.idCliente = idCliente;
 		this.oficina = oficina;
+		
 	}
 	
-	public Prestamo (long id, long monto, long interes, int numCuotas,int diaPago,String estado,  String tipoPrestamo, long idCliente) {
+	public Prestamo (BigDecimal id, BigDecimal monto, BigDecimal interes, BigDecimal numCuotas, BigDecimal diaPago,String estado,  String tipoPrestamo, BigDecimal idCliente) {
 		this.id = id;
 		this.monto = monto;
 		this.interes = interes ;
@@ -55,36 +58,36 @@ public class Prestamo implements VOPrestamo{
 		
 	}
 	
-	public long getId () {
+	public BigDecimal getId () {
 		return id;
 	}
-	public void setId (long id) {
+	public void setId (BigDecimal id) {
 		this.id = id;
 	}
-	public long getMonto () {
+	public BigDecimal getMonto () {
 		return monto;
 	}
-	public void setMonto (long monto) {
+	public void setMonto (BigDecimal monto) {
 		this.monto = monto;
 	}
-	public long getInteres () {
+	public BigDecimal getInteres () {
 		return interes;
 	}
 	
-	public void setInteres (long interes) {
+	public void setInteres (BigDecimal interes) {
 		this.interes = interes;
 	}
 	
-	public int getNumCuotas () {
+	public BigDecimal getNumCuotas () {
 		return numCuotas;
 	}
-	public void setNumCuotas ( int numCuotas) {
+	public void setNumCuotas ( BigDecimal numCuotas) {
 		this.numCuotas = numCuotas ;
 	}
-	public int getDiaPago () {
+	public BigDecimal getDiaPago () {
 		return diaPago;
 	}
-	public void setDiaPago (int diaPago) {
+	public void setDiaPago (BigDecimal diaPago) {
 		this.diaPago = diaPago ;
 	}
 	public String getEstado () {
@@ -99,10 +102,10 @@ public class Prestamo implements VOPrestamo{
 	public void setTipoPrestamo (String tipoPrestamo) {
 		this.tipoPrestamo = tipoPrestamo ;
 	}
-	public long getIdCliente () {
+	public BigDecimal getIdCliente () {
 		return idCliente;
 	}
-	public void setIdCliente ( long idCliente) {
+	public void setIdCliente ( BigDecimal idCliente) {
 		this.idCliente = idCliente;
 	}
 	public String getOficina () {
@@ -113,7 +116,7 @@ public class Prestamo implements VOPrestamo{
 	}
 	
 	@Override
-	public String toString () {
+	public String toString2 () {
 		return "Prestamo [id=" + id + ", monto=" + monto + ", interes" + interes
 				+ ", numCuotas=" + numCuotas + ", diaPago" + diaPago 
 				+ ", estado" + estado + ", tipoPrestamo=" + tipoPrestamo 

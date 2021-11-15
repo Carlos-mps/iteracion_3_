@@ -1,27 +1,28 @@
 package Negocio;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 public interface VOPrestamo {
 
-	public long getId ();
+	public BigDecimal getId ();
 	
-	public long getMonto () ;
+	public BigDecimal getMonto () ;
 	
-	public long getInteres ();
+	public BigDecimal getInteres ();
 	
-	public int getNumCuotas ();
+	public BigDecimal getNumCuotas ();
 	
-	public int getDiaPago ();
+	public BigDecimal getDiaPago ();
 	
 	public String getEstado ();
 	
 	public String getTipoPrestamo ();
 	
-	public long getIdCliente ();
+	public BigDecimal getIdCliente ();
 	
 	public String getOficina ();
 	
-	@Override
-	public String toString ();
+	public String toString2 ();
+	
 }

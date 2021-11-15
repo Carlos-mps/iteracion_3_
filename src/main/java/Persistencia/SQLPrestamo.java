@@ -1,5 +1,6 @@
 package Persistencia;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,12 +22,12 @@ class SQLPrestamo {
 			this.pp = pp;
 		}
 	 
-	 public long adicionarPrestamo (PersistenceManager pm,long id, long monto, long interes, int numCuotas,int diaPago,String estado,  String tipoPrestamo, long idCliente) 
+	 public BigDecimal adicionarPrestamo (PersistenceManager pm,BigDecimal idA, BigDecimal monto, BigDecimal interes, BigDecimal numCuotas,BigDecimal diaPago,String estado,  String tipoPrestamo, BigDecimal idCliente) 
 		{
 		 
 	        Query q = pm.newQuery(SQL, "INSERT INTO " + pp.darTablaPrestamo () + "(id, monto, interes, numCuotas, diaPago, estado,tipoPrestamo,idCliente) values (?, ?, ?, ?, ?, ?,?,?)");
-	        q.setParameters(id, monto, interes, numCuotas, diaPago,estado,tipoPrestamo,idCliente);	     
-	        return (long) q.executeUnique();
+	        q.setParameters(idA, monto, interes, numCuotas, diaPago,estado,tipoPrestamo,idCliente);	     
+	        return (BigDecimal) q.executeUnique();
 		}
 	 
 	 public long  eliminarPrestamo (PersistenceManager pm,long id ) 
@@ -40,18 +41,23 @@ class SQLPrestamo {
 
 	public List <Prestamo> darPrestamosGerenteGeneral (PersistenceManager pm)
 	{
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + pp.darTablaPrestamo ()  );
+		System.out.println("paso 3");
+		Query q = pm.newQuery(SQL, "SELECT id, monto, interes, numcuotas, diaPago, estado, tipoPrestamo, idCliente FROM " + pp.darTablaPrestamo ()  );
 		q.setResultClass(Prestamo.class);
+		System.out.println("Paso 4 ----------------------------------------------------------------------------");
 		return (List<Prestamo>) q.executeList();
 		
-	}
+		
+			}
+		
+	
 
-	public List <Prestamo> darPrestamosCliente (PersistenceManager pm, long idCliente)
+	public List <Prestamo> darPrestamosCliente (PersistenceManager pm, BigDecimal idCliente)
 	{
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + pp.darTablaPrestamo () + " WHERE IDCLIENTE = ?");
-		q.setResultClass(SQLPrestamo.class);
+		Query q = pm.newQuery(SQL, "SELECT  id, monto, interes, numcuotas, diaPago, estado, tipoPrestamo, idCliente  FROM " + pp.darTablaPrestamo () + " WHERE IDCLIENTE = ?");
+		q.setResultClass(Prestamo.class);
 		q.setParameters(idCliente);
-		return q.executeList();
+		return (List<Prestamo>)q.executeList();
 	}
 
 }

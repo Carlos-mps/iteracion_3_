@@ -1,15 +1,16 @@
 package Negocio;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 public class OperacionesBancarias implements VOOperacionesBancarias {
 
-	private long id;
+	private BigDecimal id;
 	
-	private int valor;
+	private BigDecimal valor;
 	
 	private Timestamp fechaHora;
 	
-	private long numeroCuenta;
+	private BigDecimal numeroCuenta;
 	
 	private long empleado;
 	
@@ -20,16 +21,16 @@ public class OperacionesBancarias implements VOOperacionesBancarias {
 	
 	
 	public OperacionesBancarias() {
-		this.id = 0;
-		this.valor = 0;
+		this.id = new BigDecimal(0);
+		this.valor = new BigDecimal(0);
 		this.fechaHora = new Timestamp(0);
-		this.numeroCuenta = 0;
+		this.numeroCuenta = new BigDecimal(0);
 		this.empleado = 0;
 		this.administrador = 0;
 	}
 	
 	
-	public OperacionesBancarias (long id, int valor, Timestamp fechaHora, long numeroCuenta, long empleado, long administrador) {
+	public OperacionesBancarias (BigDecimal id, BigDecimal valor, Timestamp fechaHora, BigDecimal numeroCuenta, long empleado, long administrador) {
 		this.id =  id;
 		this.valor = valor;
 		this.fechaHora = fechaHora;
@@ -38,17 +39,17 @@ public class OperacionesBancarias implements VOOperacionesBancarias {
 		this.administrador = administrador;
 	}
 	
-	public long getId () {
+	public BigDecimal getId () {
 		return id;
 	}
-	public void setId (long id) {
+	public void setId (BigDecimal id) {
 		this.id =    id;
 	}
 	
-	public long getValor () {
+	public BigDecimal getValor () {
 		return valor;
 	}
-	public void setValor (int valor) {
+	public void setValor (BigDecimal valor) {
 		this.valor = valor;
 	}
 	
@@ -59,10 +60,10 @@ public class OperacionesBancarias implements VOOperacionesBancarias {
 		this.fechaHora = fechaHora;
 	}
 	
-	public long getNumeroCuenta () {
+	public BigDecimal getNumeroCuenta () {
 		return numeroCuenta;
 	}
-	public void setNumeroCuenta (long numeroCuenta) {
+	public void setNumeroCuenta (BigDecimal numeroCuenta) {
 		this.numeroCuenta = numeroCuenta;
 	}
 	
@@ -79,14 +80,14 @@ public class OperacionesBancarias implements VOOperacionesBancarias {
 		this.administrador = administrador;
 	}
 	
-	@Override
+	/*@Override
 	public String toString () {
 		return "OperacionesBancarias [id=" + id + ", valor=" + valor + ", fechaHora=" + fechaHora 
 				+ ", numeroCuenta=" + numeroCuenta + ", empleado=" + empleado + ", administrador=" 
 				+ administrador + "]";
 	}
 	
-	
+	*/
 	
 	
 }

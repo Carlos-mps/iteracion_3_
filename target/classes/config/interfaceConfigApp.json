@@ -106,6 +106,16 @@
 					"event": "darPrestamosGerenteGeneral"
 				}
 			]
+		},
+		{
+			"menuTitle": "REQC5",
+			"options":
+			[
+				{
+					"label": "darOperaciones",
+					"event": "darOperacionesBancarias"
+				}
+			]
 		}
 	
 		

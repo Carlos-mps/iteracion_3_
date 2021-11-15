@@ -1,5 +1,6 @@
 package Persistencia;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.LinkedList;
@@ -22,6 +23,7 @@ import Negocio.Cliente;
 import Negocio.CuentaNatural;
 import Negocio.CuentasJuridicas;
 import Negocio.Oficina;
+import Negocio.OperacionesBancarias;
 import Negocio.Prestamo;
 import Negocio.PuntoDeAtencion;
 import Negocio.Usuario;
@@ -55,6 +57,7 @@ public class PersistenciaBancAndes {
 	private SQLCliente sqlCliente;
 	private SQLCuentaNatural sqlCuentaNatural;
 	private SQLEmpleado sqlEmpleado;
+	private SQLOperacionesBancarias sqlOperacionesBancarias;
 	private PersistenciaBancAndes (){
 		BasicConfigurator.configure();
 		pmf = JDOHelper.getPersistenceManagerFactory("bancAndes");		
@@ -143,6 +146,7 @@ public class PersistenciaBancAndes {
 		sqlCliente = new SQLCliente(this);
 		sqlCuentaNatural = new SQLCuentaNatural(this);
 		sqlEmpleado = new SQLEmpleado(this);
+		sqlOperacionesBancarias = new SQLOperacionesBancarias(this);
 	}
 	
 	public String darSeqBancAndes ()
@@ -181,6 +185,10 @@ public class PersistenciaBancAndes {
 	{
 		return tablas.get (6);
 	}
+	public String darTablaOperacionesBancarias ()
+	{
+		return tablas.get (9);
+	}
 	
 	public String darTablaCuentaNatural () {
 		return tablas.get(17);
@@ -193,6 +201,13 @@ public class PersistenciaBancAndes {
         log.trace ("Generando secuencia: " + resp);
         return resp;
     }
+	private BigDecimal nextval1 ()
+	{
+		BigDecimal resp =  sqlUtil.nextval2 (pmf.getPersistenceManager());
+		log.trace ("Generando secuencia: " + resp);
+		return resp;
+	}
+	
 	
 	private String darDetalleException(Exception e) 
 	{
@@ -330,16 +345,16 @@ public class PersistenciaBancAndes {
         }
 	}
 	
-	public Prestamo adicionarPrestamo(   long monto, long interes, int numCuotas,int diaPago,  String tipoPrestamo, long idCliente  ) 
+	public Prestamo adicionarPrestamo(   BigDecimal monto, BigDecimal interes, BigDecimal numCuotas,BigDecimal diaPago,  String tipoPrestamo, BigDecimal idCliente  ) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
         Transaction tx=pm.currentTransaction();
         try
         {
             tx.begin(); 
-            long idA =  nextval ();
+            BigDecimal idA =  nextval1 ();
             String activo = "Activo";            
-            long tuplasInsertadas = sqlPrestamo.adicionarPrestamo(pm,idA,monto, interes, numCuotas, diaPago,activo,tipoPrestamo,idCliente);
+            BigDecimal tuplasInsertadas = sqlPrestamo.adicionarPrestamo(pm,idA,monto, interes, numCuotas, diaPago,activo,tipoPrestamo,idCliente);
             
             tx.commit();
 
@@ -591,16 +606,102 @@ public class PersistenciaBancAndes {
 					pm.close();
 				}
 			}
+			 
+			
+			//get the prestamo por idCliente
+			public List <Prestamo> darPrestamosCliente (BigDecimal idCliente)
+			{
+				PersistenceManager pm = pmf.getPersistenceManager();
+				Transaction tx = pm.currentTransaction();
+				try
+				{
+					tx.begin();
+					List <Prestamo> resp = sqlPrestamo.darPrestamosCliente(pm, idCliente);
+					tx.commit();
+					
+					return resp;
+				}
+				catch (Exception e)
+				{
+//					e.printStackTrace();
+					log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+					return null;
+				}
+				finally
+				{
+					if (tx.isActive())
+					{
+						tx.rollback();
+					}
+					pm.close();
+				}
+			}
+
+			public List<OperacionesBancarias> darOperacionesCliente (BigDecimal numeroCuenta)
+			{
+				PersistenceManager pm = pmf.getPersistenceManager();
+				Transaction tx = pm.currentTransaction();
+				try
+				{
+					tx.begin();
+					List<OperacionesBancarias> resp = sqlOperacionesBancarias.darOperacionesCliente(pm, numeroCuenta);
+					tx.commit();
+					
+					return resp;
+				}
+				catch (Exception e)
+				{
+//					e.printStackTrace();
+					log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+					return null;
+				}
+				finally
+				{
+					if (tx.isActive())
+					{
+						tx.rollback();
+					}
+					pm.close();
+				}
+			}
 
 
 			//get the prestamo por su numeroId
 			public List<Prestamo> darPrestamos (){
+				System.out.println("paso 2");
 				PersistenceManager pm = pmf.getPersistenceManager();
 				Transaction tx=pm.currentTransaction();
 				try
 				{
 					tx.begin();
 					List<Prestamo> resp = sqlPrestamo.darPrestamosGerenteGeneral(pm);
+					tx.commit();
+					return resp;
+				}
+				catch (Exception e)
+				{
+//					e.printStackTrace();
+					log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+					return null;
+				}
+				finally
+				{
+					if (tx.isActive())
+					{
+						tx.rollback();
+					}
+					pm.close();
+				}
+			}
+
+			public List<OperacionesBancarias> darOperacionesBancarias (){
+				System.out.println("paso 2_____________________________");
+				PersistenceManager pm = pmf.getPersistenceManager();
+				Transaction tx=pm.currentTransaction();
+				try
+				{
+					tx.begin();
+					List<OperacionesBancarias> resp = sqlOperacionesBancarias.darOperacionesGerente(pm);
 					tx.commit();
 					return resp;
 				}
