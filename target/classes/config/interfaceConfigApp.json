@@ -68,6 +68,15 @@
 				}
 			]
 		},
+		{ "menuTitle": "REQF10",
+		  "options":
+			[
+				{
+					"label": "Asociarcuenta",
+					"event": "asociarCuentaNatural"
+				}
+			]
+		},
 		{	"menuTitle": "REQC1",
 			"options":
 			[

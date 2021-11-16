@@ -135,6 +135,29 @@ public String darTipoPersona (long numeroId)
 	return tipo;
 }
 
+public BigDecimal darIdClienteNatural (long numeroId)
+{
+	log.info ("Buscando id del cliente por numero: " + numeroId);
+	BigDecimal tipo = pp.darIdClienteNatural (numeroId);
+	log.info ("Buscando id del cliente por numero: " + tipo);
+	return tipo;
+}
+
+public BigDecimal darIdClienteJuridico (long numeroId)
+{
+	log.info ("Buscando id del cliente por numero: " + numeroId);
+	BigDecimal tipo = pp.darIdClienteJuridico (numeroId);
+	log.info ("Buscando id del cliente por numero: " + tipo);
+	return tipo;
+}
+public long asociarCuentaNatural (long numeroUnicoNatural, long numeroEmpleador, long valorAPagar, String frecuenciaPago) 
+{
+    log.info ("Asociando cuenta por id: " + numeroUnicoNatural);
+    long resp = pp.asociarCuentaNatural (numeroUnicoNatural,numeroEmpleador,valorAPagar,frecuenciaPago);
+    log.info ("Asociando cuenta por Id: " + resp );
+    return resp;
+}
+
 public String buscarTipoEmpleado (long numeroId)
 {
 	log.info ("Buscando tipo de empleado por numero: " + numeroId);

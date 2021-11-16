@@ -1,5 +1,6 @@
 package Persistencia;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.jdo.PersistenceManager;
@@ -44,6 +45,14 @@ private final static String SQL = PersistenciaBancAndes.SQL;
 	        q.setParameters(numeroUnico);
 			return (CuentasJuridicas) q.executeUnique();
 			}
+	 
+	 public BigDecimal darIdClienteJuridico(PersistenceManager pm, long numeroUnico) 
+		{
+
+			Query q = pm.newQuery(SQL, "SELECT NUMEROIDCLIENTE FROM " + pp.darTablaCuentasJuridicas () + " WHERE NUMEROUNICO = ?");			
+			q.setParameters(numeroUnico);
+			return (BigDecimal) q.executeUnique();
+		}
 
 	public List<CuentasJuridicas> darCuentaParaCliente(PersistenceManager pm, long numeroIDCliente ){
 	Query q = pm.newQuery(SQL, "SELECT * FROM " + pp.darTablaCuentasJuridicas () + " WHERE NUMEROIDCLIENTE = ?");

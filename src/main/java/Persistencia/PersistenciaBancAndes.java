@@ -577,6 +577,60 @@ public class PersistenciaBancAndes {
 				pm.close();
 				}
 			}
+		
+		public BigDecimal darIdClienteNatural(long numeroID) {
+			PersistenceManager pm = pmf.getPersistenceManager();
+			Transaction tx=pm.currentTransaction();
+			try
+			{
+				tx.begin();
+				BigDecimal resp = sqlCuentaNatural.darIdClienteNatural(pm, numeroID);
+				tx.commit();
+				return resp;
+
+			}
+			catch (Exception e)
+			{
+//				e.printStackTrace();
+				log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+				return null;
+			}
+			finally
+			{
+				if (tx.isActive())
+				{
+					tx.rollback();
+				}
+				pm.close();
+				}
+			}
+		public BigDecimal darIdClienteJuridico(long numeroID) {
+			PersistenceManager pm = pmf.getPersistenceManager();
+			Transaction tx=pm.currentTransaction();
+			try
+			{
+				tx.begin();
+				BigDecimal resp = sqlCuentasJuridicas.darIdClienteJuridico(pm, numeroID);
+				tx.commit();
+				return resp;
+
+			}
+			catch (Exception e)
+			{
+//				e.printStackTrace();
+				log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+				return null;
+			}
+			finally
+			{
+				if (tx.isActive())
+				{
+					tx.rollback();
+				}
+				pm.close();
+				}
+			}
+
 
 			//get the tipo de empleado por su numeroId
 			public String buscarTipoEmpleadoId(Long numeroId)
@@ -692,6 +746,34 @@ public class PersistenciaBancAndes {
 					}
 					pm.close();
 				}
+			}
+			
+			public long asociarCuentaNatural(long numeroUnicoNatural, long numeroEmpleador, long valorAPagar, String frecuenciaPago) 
+			{
+				PersistenceManager pm = pmf.getPersistenceManager();
+		        Transaction tx=pm.currentTransaction();
+		        try
+		        {
+		            tx.begin();
+		            long resp = sqlCuentaNatural.asociarCuentaNatural (pm, numeroUnicoNatural,numeroEmpleador,valorAPagar,frecuenciaPago);
+		            tx.commit();
+
+		            return resp;
+		        }
+		        catch (Exception e)
+		        {
+//		        	e.printStackTrace();
+		        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+		            return -1;
+		        }
+		        finally
+		        {
+		            if (tx.isActive())
+		            {
+		                tx.rollback();
+		            }
+		            pm.close();
+		        }
 			}
 
 			public List<OperacionesBancarias> darOperacionesBancarias (){

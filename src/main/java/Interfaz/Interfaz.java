@@ -13,7 +13,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+<<<<<<< Updated upstream
 import java.util.LinkedList;
+=======
+>>>>>>> Stashed changes
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -90,248 +93,280 @@ public class Interfaz extends JFrame implements ActionListener{
 		add( panelDatos, BorderLayout.CENTER ); 
 
 	}
-	
-	 private JsonObject openConfig (String tipo, String archConfig)
-	    {
-	    	JsonObject config = null;
-			try 
-			{
-				Gson gson = new Gson( );
-				FileReader file = new FileReader (archConfig);
-				JsonReader reader = new JsonReader ( file );
-				config = gson.fromJson(reader, JsonObject.class);
-				log.info ("Se encontr� un archivo de configuraci�n v�lido: " + tipo);
-			} 
-			catch (Exception e)
-			{
-//				e.printStackTrace ();
-				log.info ("NO se encontr� un archivo de configuraci�n v�lido");			
-				JOptionPane.showMessageDialog(null, "No se encontr� un archivo de configuraci�n de interfaz v�lido: " + tipo, "Parranderos App", JOptionPane.ERROR_MESSAGE);
-			}	
-	        return config;
-	    }
-	 
-	   private void configurarFrame(  )
-	    {
-	    	int alto = 0;
-	    	int ancho = 0;
-	    	String titulo = "";	
-	    	
-	    	if ( guiConfig == null )
-	    	{
-	    		log.info ( "Se aplica configuraci�n por defecto" );			
-				titulo = "BancAndes APP Default";
-				alto = 300;
-				ancho = 500;
-	    	}
-	    	else
-	    	{
-				log.info ( "Se aplica configuraci�n indicada en el archivo de configuraci�n" );
-	    		titulo = guiConfig.get("title").getAsString();
-				alto= guiConfig.get("frameH").getAsInt();
-				ancho = guiConfig.get("frameW").getAsInt();
-	    	}
-	    	
-	        setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-	        setLocation (50,50);
-	        setResizable( true );
-	        setBackground( Color.WHITE );
 
-	        setTitle( titulo );
-			setSize ( ancho, alto);        
-	    }
-	   
-	   private void crearMenu(  JsonArray jsonMenu )
-	    {    	
-	    	// Creaci�n de la barra de men�s
-	        menuBar = new JMenuBar();       
-	        for (JsonElement men : jsonMenu)
-	        {
-	        	// Creaci�n de cada uno de los men�s
-	        	JsonObject jom = men.getAsJsonObject(); 
-
-	        	String menuTitle = jom.get("menuTitle").getAsString();        	
-	        	JsonArray opciones = jom.getAsJsonArray("options");
-	        	
-	        	JMenu menu = new JMenu( menuTitle);
-	        	
-	        	for (JsonElement op : opciones)
-	        	{       	
-	        		// Creaci�n de cada una de las opciones del men�
-	        		JsonObject jo = op.getAsJsonObject(); 
-	        		String lb =   jo.get("label").getAsString();
-	        		String event = jo.get("event").getAsString();
-	        		
-	        		JMenuItem mItem = new JMenuItem( lb );
-	        		mItem.addActionListener( this );
-	        		mItem.setActionCommand(event);
-	        		
-	        		menu.add(mItem);
-	        	}       
-	        	menuBar.add( menu );
-	        }        
-	        setJMenuBar ( menuBar );	
-	    }
-	   
-	   public void adicionarUsuario( )
-	    {
-	    	try 
-	    	{	    		
-	    		String numeroDocumentoStr = JOptionPane.showInputDialog (this, "Numero del documento?", "Adicionar Usuario", JOptionPane.QUESTION_MESSAGE);
-	    		String tipoDocumento = JOptionPane.showInputDialog (this, "Tipo del documento?", "Adicionar Usuario", JOptionPane.QUESTION_MESSAGE);
-	    		String login = JOptionPane.showInputDialog (this, "Login?", "Adicionar Usuario", JOptionPane.QUESTION_MESSAGE);
-	    		String palabraClave = JOptionPane.showInputDialog (this, "Palabra clave?", "Adicionar Usuario", JOptionPane.QUESTION_MESSAGE);
-	    		String nombre = JOptionPane.showInputDialog (this, "nombre?", "Adicionar Usuario", JOptionPane.QUESTION_MESSAGE);
-	    		String nacionalidad = JOptionPane.showInputDialog (this, "nacionalidad?", "Adicionar Usuario", JOptionPane.QUESTION_MESSAGE);
-	    		String direccionFisica = JOptionPane.showInputDialog (this, "Direccion fisica?", "Adicionar Usuario", JOptionPane.QUESTION_MESSAGE);
-	    		String direccionElectronica = JOptionPane.showInputDialog (this, "Direccion electronica?", "Adicionar Usuario", JOptionPane.QUESTION_MESSAGE);
-	    		String telefonoStr = JOptionPane.showInputDialog (this, "Telefono?", "Adicionar Usuario", JOptionPane.QUESTION_MESSAGE);
-	    		String ciudad = JOptionPane.showInputDialog (this, "Ciudad?", "Adicionar Usuario", JOptionPane.QUESTION_MESSAGE);
-	    		String departamento = JOptionPane.showInputDialog (this, "Departamento?", "Adicionar Usuario", JOptionPane.QUESTION_MESSAGE);
-	    		String codigoPostalStr = JOptionPane.showInputDialog (this, "Codigo postal?", "Adicionar Usuario", JOptionPane.QUESTION_MESSAGE);
-	    				    		   		
-	    		if (numeroDocumentoStr != null && tipoDocumento != null && login != null && palabraClave != null && nombre != null && nacionalidad != null && 
-	    				direccionFisica != null && direccionElectronica != null && telefonoStr != null && ciudad != null && departamento != null && codigoPostalStr != null)
-	    		{
-	    			long numeroDocumento = Long.valueOf (numeroDocumentoStr);
-	    			long telefono = Long.valueOf (telefonoStr);
-	    			long codigoPostal = Long.valueOf (codigoPostalStr);
-
-	        		VOUsuario tb = bancAndes.adicionarUsuario (numeroDocumento,tipoDocumento,login,palabraClave,nombre,nacionalidad,direccionFisica,direccionElectronica
-	        				,telefono,ciudad,departamento,codigoPostal);
-	        		if (tb == null)
-	        		{
-	        			throw new Exception ("No se pudo agregar al Usuario: " + nombre);
-	        		}
-	        		String resultado = "En adicionarUsuario\n\n";
-	        		resultado += "Usuario adicionado exitosamente: " + tb;
-	    			resultado += "\n Operaci�n terminada";
-	    			panelDatos.actualizarInterfaz(resultado);
-	    		}
-	    		else
-	    		{
-	    			panelDatos.actualizarInterfaz("Operaci�n cancelada ");
-	    		}
-			} 
-	    	catch (Exception e) 
-	    	{
-//				e.printStackTrace();
-				String resultado = generarMensajeError(e);
-				panelDatos.actualizarInterfaz(resultado);
-			}
-	    }
-	   
-	   public void adicionarOficina( )
-	    {
-	    	try 
-	    	{	    		
-	    		String nombre = JOptionPane.showInputDialog (this, "Nombre de la oficina?", "Adicionar Oficina", JOptionPane.QUESTION_MESSAGE);
-	    		String direccion = JOptionPane.showInputDialog (this, "Direccion?", "Adicionar Oficina", JOptionPane.QUESTION_MESSAGE);
-	    		String numPuntosAtencionSrt = JOptionPane.showInputDialog (this, "Numero de puntos de atencion?", "Adicionar Oficina", JOptionPane.QUESTION_MESSAGE);
-	    		String idEmpleadoSrt = JOptionPane.showInputDialog (this, "Numero de documento del gerente?", "Adicionar Oficina", JOptionPane.QUESTION_MESSAGE);
-	    			   		
-	    		if (nombre != null && direccion != null && numPuntosAtencionSrt != null && idEmpleadoSrt != null )
-	    		{
-	    			long numPuntosAtencion = Long.valueOf (numPuntosAtencionSrt);
-	    			long idEmpleado = Long.valueOf (idEmpleadoSrt);	    			
-
-	        		VOOficina tb = bancAndes.adicionarOficina(nombre , direccion ,numPuntosAtencion ,  idEmpleado );
-	        		if (tb == null)
-	        		{
-	        			throw new Exception ("No se pudo agregar la oficina: " + nombre);
-	        		}
-	        		String resultado = "En adicionarOficina\n\n";
-	        		resultado += "Oficina adicionada exitosamente: " + tb;
-	    			resultado += "\n Operaci�n terminada";
-	    			panelDatos.actualizarInterfaz(resultado);
-	    		}
-	    		else
-	    		{
-	    			panelDatos.actualizarInterfaz("Operaci�n cancelada ");
-	    		}
-			} 
-	    	catch (Exception e) 
-	    	{
-//				e.printStackTrace();
-				String resultado = generarMensajeError(e);
-				panelDatos.actualizarInterfaz(resultado);
-			}
-	    }
-	public void darCuentaPorNumero ( ){
-	try{
-	long numeroCuenta = Long.parseLong(JOptionPane.showInputDialog(this, "Ingrese el numero de cuenta", "Dar cuenta por numero", JOptionPane.QUESTION_MESSAGE));
-	VOCuenta cuenta = bancAndes.darCuentaPorNumero(numeroCuenta);
-	if (cuenta == null)
+	private JsonObject openConfig (String tipo, String archConfig)
 	{
-		throw new Exception ("No se pudo encontrar la cuenta con numero: " + numeroCuenta);
+		JsonObject config = null;
+		try 
+		{
+			Gson gson = new Gson( );
+			FileReader file = new FileReader (archConfig);
+			JsonReader reader = new JsonReader ( file );
+			config = gson.fromJson(reader, JsonObject.class);
+			log.info ("Se encontr� un archivo de configuraci�n v�lido: " + tipo);
+		} 
+		catch (Exception e)
+		{
+			//				e.printStackTrace ();
+			log.info ("NO se encontr� un archivo de configuraci�n v�lido");			
+			JOptionPane.showMessageDialog(null, "No se encontr� un archivo de configuraci�n de interfaz v�lido: " + tipo, "Parranderos App", JOptionPane.ERROR_MESSAGE);
+		}	
+		return config;
 	}
-	String resultado = "En darCuentaPorNumero\n\n";
-	resultado += "Cuenta: " + cuenta;
-	resultado += "\n Operaci�n terminada";
-	panelDatos.actualizarInterfaz(resultado);
+
+	private void configurarFrame(  )
+	{
+		int alto = 0;
+		int ancho = 0;
+		String titulo = "";	
+
+		if ( guiConfig == null )
+		{
+			log.info ( "Se aplica configuraci�n por defecto" );			
+			titulo = "BancAndes APP Default";
+			alto = 300;
+			ancho = 500;
+		}
+		else
+		{
+			log.info ( "Se aplica configuraci�n indicada en el archivo de configuraci�n" );
+			titulo = guiConfig.get("title").getAsString();
+			alto= guiConfig.get("frameH").getAsInt();
+			ancho = guiConfig.get("frameW").getAsInt();
+		}
+
+		setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+		setLocation (50,50);
+		setResizable( true );
+		setBackground( Color.WHITE );
+
+		setTitle( titulo );
+		setSize ( ancho, alto);        
 	}
-	catch (Exception e){
-		String resultado = generarMensajeError(e);
-		panelDatos.actualizarInterfaz(resultado);
+
+	private void crearMenu(  JsonArray jsonMenu )
+	{    	
+		// Creaci�n de la barra de men�s
+		menuBar = new JMenuBar();       
+		for (JsonElement men : jsonMenu)
+		{
+			// Creaci�n de cada uno de los men�s
+			JsonObject jom = men.getAsJsonObject(); 
+
+			String menuTitle = jom.get("menuTitle").getAsString();        	
+			JsonArray opciones = jom.getAsJsonArray("options");
+
+			JMenu menu = new JMenu( menuTitle);
+
+			for (JsonElement op : opciones)
+			{       	
+				// Creaci�n de cada una de las opciones del men�
+				JsonObject jo = op.getAsJsonObject(); 
+				String lb =   jo.get("label").getAsString();
+				String event = jo.get("event").getAsString();
+
+				JMenuItem mItem = new JMenuItem( lb );
+				mItem.addActionListener( this );
+				mItem.setActionCommand(event);
+
+				menu.add(mItem);
+			}       
+			menuBar.add( menu );
+		}        
+		setJMenuBar ( menuBar );	
 	}
-	}
-	
-	
-	
-	
-	   
-	   public void adicionarCuenta( )
-	    {
-	    	try 
-	    	{	    		
-	    		String tipoCuenta = JOptionPane.showInputDialog (this, "Tipo cuenta?", "Adicionar Cuenta", JOptionPane.QUESTION_MESSAGE);
-	    		String saldoSrt = JOptionPane.showInputDialog (this, "saldo?", "Adicionar Cuenta", JOptionPane.QUESTION_MESSAGE);
-	    		String numeroIDClienteSrt = JOptionPane.showInputDialog (this, "Num documento cliente?", "Adicionar Cuenta", JOptionPane.QUESTION_MESSAGE);
-	    		
-	    			   		
-	    		if (tipoCuenta != null && saldoSrt != null && numeroIDClienteSrt!= null )
-	    		{
-	    			int saldo = Integer.valueOf (saldoSrt);
-	    			long numeroIDCliente = Long.valueOf (numeroIDClienteSrt);	    			
-	        		
-	        		
-	        	if (bancAndes.darTipoPersona (numeroIDCliente).equals("Juridica")) {
-	        		VOCuenta tb = bancAndes.adicionarCuentaJuridica (tipoCuenta,saldo,numeroIDCliente);
-	        	
-	        	
-	        		if (tb == null)
-	        		{
-	        			throw new Exception ("No se pudo agregar la cuenta: " );
-	        		}
-	        		String resultado = "En adicionarCuenta\n\n";
-	        		resultado += "Cuenta adicionada exitosamente: " + tb;
-	    			resultado += "\n Operaci�n terminada";
-	    			panelDatos.actualizarInterfaz(resultado);
-	    		}
-	        	else if (bancAndes.darTipoPersona (numeroIDCliente).equals("Natural")) {
-	        		VOCuentaNatural tb = bancAndes.adicionarCuentaNatural (tipoCuenta,saldo,numeroIDCliente);
-	        		
-	        		if (tb == null)
-	        		{
-	        			throw new Exception ("No se pudo agregar la cuenta: " );
-	        		}
-	        		String resultado = "En adicionarCuenta\n\n";
-	        		resultado += "Cuenta adicionada exitosamente: " + tb;
-	    			resultado += "\n Operaci�n terminada";
-	    			panelDatos.actualizarInterfaz(resultado);
-	        	}
-	    		else
-	    		{
-	    			panelDatos.actualizarInterfaz("Operaci�n cancelada ");
-	    		}
-	    }
-			} 
-	    	catch (Exception e) 
-	    	{
-//				e.printStackTrace();
-				String resultado = generarMensajeError(e);
+
+	public void adicionarUsuario( )
+	{
+		try 
+		{	    		
+			String numeroDocumentoStr = JOptionPane.showInputDialog (this, "Numero del documento?", "Adicionar Usuario", JOptionPane.QUESTION_MESSAGE);
+			String tipoDocumento = JOptionPane.showInputDialog (this, "Tipo del documento?", "Adicionar Usuario", JOptionPane.QUESTION_MESSAGE);
+			String login = JOptionPane.showInputDialog (this, "Login?", "Adicionar Usuario", JOptionPane.QUESTION_MESSAGE);
+			String palabraClave = JOptionPane.showInputDialog (this, "Palabra clave?", "Adicionar Usuario", JOptionPane.QUESTION_MESSAGE);
+			String nombre = JOptionPane.showInputDialog (this, "nombre?", "Adicionar Usuario", JOptionPane.QUESTION_MESSAGE);
+			String nacionalidad = JOptionPane.showInputDialog (this, "nacionalidad?", "Adicionar Usuario", JOptionPane.QUESTION_MESSAGE);
+			String direccionFisica = JOptionPane.showInputDialog (this, "Direccion fisica?", "Adicionar Usuario", JOptionPane.QUESTION_MESSAGE);
+			String direccionElectronica = JOptionPane.showInputDialog (this, "Direccion electronica?", "Adicionar Usuario", JOptionPane.QUESTION_MESSAGE);
+			String telefonoStr = JOptionPane.showInputDialog (this, "Telefono?", "Adicionar Usuario", JOptionPane.QUESTION_MESSAGE);
+			String ciudad = JOptionPane.showInputDialog (this, "Ciudad?", "Adicionar Usuario", JOptionPane.QUESTION_MESSAGE);
+			String departamento = JOptionPane.showInputDialog (this, "Departamento?", "Adicionar Usuario", JOptionPane.QUESTION_MESSAGE);
+			String codigoPostalStr = JOptionPane.showInputDialog (this, "Codigo postal?", "Adicionar Usuario", JOptionPane.QUESTION_MESSAGE);
+
+			if (numeroDocumentoStr != null && tipoDocumento != null && login != null && palabraClave != null && nombre != null && nacionalidad != null && 
+					direccionFisica != null && direccionElectronica != null && telefonoStr != null && ciudad != null && departamento != null && codigoPostalStr != null)
+			{
+				long numeroDocumento = Long.valueOf (numeroDocumentoStr);
+				long telefono = Long.valueOf (telefonoStr);
+				long codigoPostal = Long.valueOf (codigoPostalStr);
+
+				VOUsuario tb = bancAndes.adicionarUsuario (numeroDocumento,tipoDocumento,login,palabraClave,nombre,nacionalidad,direccionFisica,direccionElectronica
+						,telefono,ciudad,departamento,codigoPostal);
+				if (tb == null)
+				{
+					throw new Exception ("No se pudo agregar al Usuario: " + nombre);
+				}
+				String resultado = "En adicionarUsuario\n\n";
+				resultado += "Usuario adicionado exitosamente: " + tb;
+				resultado += "\n Operaci�n terminada";
 				panelDatos.actualizarInterfaz(resultado);
 			}
+			else
+			{
+				panelDatos.actualizarInterfaz("Operaci�n cancelada ");
+			}
+		} 
+		catch (Exception e) 
+		{
+			//				e.printStackTrace();
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+
+	public void adicionarOficina( )
+	{
+		try 
+		{	    		
+			String nombre = JOptionPane.showInputDialog (this, "Nombre de la oficina?", "Adicionar Oficina", JOptionPane.QUESTION_MESSAGE);
+			String direccion = JOptionPane.showInputDialog (this, "Direccion?", "Adicionar Oficina", JOptionPane.QUESTION_MESSAGE);
+			String numPuntosAtencionSrt = JOptionPane.showInputDialog (this, "Numero de puntos de atencion?", "Adicionar Oficina", JOptionPane.QUESTION_MESSAGE);
+			String idEmpleadoSrt = JOptionPane.showInputDialog (this, "Numero de documento del gerente?", "Adicionar Oficina", JOptionPane.QUESTION_MESSAGE);
+
+			if (nombre != null && direccion != null && numPuntosAtencionSrt != null && idEmpleadoSrt != null )
+			{
+				long numPuntosAtencion = Long.valueOf (numPuntosAtencionSrt);
+				long idEmpleado = Long.valueOf (idEmpleadoSrt);	    			
+
+				VOOficina tb = bancAndes.adicionarOficina(nombre , direccion ,numPuntosAtencion ,  idEmpleado );
+				if (tb == null)
+				{
+					throw new Exception ("No se pudo agregar la oficina: " + nombre);
+				}
+				String resultado = "En adicionarOficina\n\n";
+				resultado += "Oficina adicionada exitosamente: " + tb;
+				resultado += "\n Operaci�n terminada";
+				panelDatos.actualizarInterfaz(resultado);
+			}
+			else
+			{
+				panelDatos.actualizarInterfaz("Operaci�n cancelada ");
+			}
+		} 
+		catch (Exception e) 
+		{
+			//				e.printStackTrace();
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+	public void darCuentaPorNumero ( ){
+		try{
+			long numeroCuenta = Long.parseLong(JOptionPane.showInputDialog(this, "Ingrese el numero de cuenta", "Dar cuenta por numero", JOptionPane.QUESTION_MESSAGE));
+			VOCuenta cuenta = bancAndes.darCuentaPorNumero(numeroCuenta);
+			if (cuenta == null)
+			{
+				throw new Exception ("No se pudo encontrar la cuenta con numero: " + numeroCuenta);
+			}
+			String resultado = "En darCuentaPorNumero\n\n";
+			resultado += "Cuenta: " + cuenta;
+			resultado += "\n Operaci�n terminada";
+			panelDatos.actualizarInterfaz(resultado);
+		}
+		catch (Exception e){
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+
+
+
+
+
+	public void adicionarCuenta( )
+	{
+		try 
+		{	    		
+			String tipoCuenta = JOptionPane.showInputDialog (this, "Tipo cuenta?", "Adicionar Cuenta", JOptionPane.QUESTION_MESSAGE);
+			String saldoSrt = JOptionPane.showInputDialog (this, "saldo?", "Adicionar Cuenta", JOptionPane.QUESTION_MESSAGE);
+			String numeroIDClienteSrt = JOptionPane.showInputDialog (this, "Num documento cliente?", "Adicionar Cuenta", JOptionPane.QUESTION_MESSAGE);
+
+
+			if (tipoCuenta != null && saldoSrt != null && numeroIDClienteSrt!= null )
+			{
+				int saldo = Integer.valueOf (saldoSrt);
+				long numeroIDCliente = Long.valueOf (numeroIDClienteSrt);	    			
+
+
+				if (bancAndes.darTipoPersona (numeroIDCliente).equals("Juridica")) {
+					VOCuenta tb = bancAndes.adicionarCuentaJuridica (tipoCuenta,saldo,numeroIDCliente);
+
+
+					if (tb == null)
+					{
+						throw new Exception ("No se pudo agregar la cuenta: " );
+					}
+					String resultado = "En adicionarCuenta\n\n";
+					resultado += "Cuenta adicionada exitosamente: " + tb;
+					resultado += "\n Operaci�n terminada";
+					panelDatos.actualizarInterfaz(resultado);
+				}
+				else if (bancAndes.darTipoPersona (numeroIDCliente).equals("Natural")) {
+					VOCuentaNatural tb = bancAndes.adicionarCuentaNatural (tipoCuenta,saldo,numeroIDCliente);
+
+					if (tb == null)
+					{
+						throw new Exception ("No se pudo agregar la cuenta: " );
+					}
+					String resultado = "En adicionarCuenta\n\n";
+					resultado += "Cuenta adicionada exitosamente: " + tb;
+					resultado += "\n Operaci�n terminada";
+					panelDatos.actualizarInterfaz(resultado);
+				}
+				else
+				{
+					panelDatos.actualizarInterfaz("Operaci�n cancelada ");
+				}
+			}
+		} 
+		catch (Exception e) 
+		{
+			//				e.printStackTrace();
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+	public void adicionarPrestamo( )
+	{
+		try 
+		{	    		
+			String montoSrt = JOptionPane.showInputDialog (this, "Monto del prestamo?", "Adicionar Prestamo", JOptionPane.QUESTION_MESSAGE);
+			String interesSrt = JOptionPane.showInputDialog (this, "Interes?", "Adicionar Prestamo", JOptionPane.QUESTION_MESSAGE);
+			String numCuotasSrt = JOptionPane.showInputDialog (this, "Num de cuotas?", "Adicionar Prestamo", JOptionPane.QUESTION_MESSAGE);
+			String diaPagoSrt = JOptionPane.showInputDialog (this, "Dia de pago?", "Adicionar Prestamo", JOptionPane.QUESTION_MESSAGE);
+			String tipoPrestamo = JOptionPane.showInputDialog (this, "Tipo de prestamo?", "Adicionar Prestamo", JOptionPane.QUESTION_MESSAGE);
+			String idClienteSrt = JOptionPane.showInputDialog (this, "Num documento cliente?", "Adicionar Prestamo", JOptionPane.QUESTION_MESSAGE);
+
+
+			if (montoSrt != null && interesSrt != null && numCuotasSrt!= null&& diaPagoSrt != null && tipoPrestamo != null && idClienteSrt!= null )
+			{
+				int numCuotas = Integer.valueOf (numCuotasSrt);
+				int diaPago = Integer.valueOf (diaPagoSrt);
+				long monto = Long.valueOf (montoSrt);	 
+				long interes = Long.valueOf (interesSrt);
+				long idCliente = Long.valueOf (idClienteSrt);
+
+				VOPrestamo tb = bancAndes.adicionarPrestamo (monto,interes,numCuotas,diaPago,tipoPrestamo,idCliente);
+				if (tb == null)
+				{
+					throw new Exception ("No se pudo agregar el prestamo: " );
+				}
+				String resultado = "En adicionarPrestamo\n\n";
+				resultado += "Prestamo adicionado exitosamente: " + tb;
+				resultado += "\n Operaci�n terminada";
+				panelDatos.actualizarInterfaz(resultado);
+			}
+<<<<<<< Updated upstream
 	    }
 	   public void adicionarPrestamo( )
 	    {
@@ -373,120 +408,132 @@ public class Interfaz extends JFrame implements ActionListener{
 //				e.printStackTrace();
 				String resultado = generarMensajeError(e);
 				panelDatos.actualizarInterfaz(resultado);
+=======
+			else
+			{
+				panelDatos.actualizarInterfaz("Operaci�n cancelada ");
+>>>>>>> Stashed changes
 			}
-	    }
-	   
-	   public void adicionarPuntoDeAtencion( )
-	    {
-	    	try 
-	    	{	    		
-	    		String tipoPunto = JOptionPane.showInputDialog (this, "Tipo punto?", "Adicionar Punto", JOptionPane.QUESTION_MESSAGE);
-	    		String localizacion = JOptionPane.showInputDialog (this, "localizacion?", "Adicionar Punto", JOptionPane.QUESTION_MESSAGE);
-	    		String oficina = JOptionPane.showInputDialog (this, "oficina?", "Adicionar Punto", JOptionPane.QUESTION_MESSAGE);
-	    		
-	    			   		
-	    		if (tipoPunto != null && localizacion != null  )
-	    		{
-	    			
-	        		VOPuntoDeAtencion tb = bancAndes.adicionarPuntoDeAtencion (tipoPunto,localizacion,oficina);
-	        		if (tb == null)
-	        		{
-	        			throw new Exception ("No se pudo agregar el punto: " );
-	        		}
-	        		String resultado = "En adicionarPunto\n\n";
-	        		resultado += "Punto adicionada exitosamente: " + tb;
-	    			resultado += "\n Operaci�n terminada";
-	    			panelDatos.actualizarInterfaz(resultado);
-	    		}
-	    		else
-	    		{
-	    			panelDatos.actualizarInterfaz("Operaci�n cancelada ");
-	    		}
-			} 
-	    	catch (Exception e) 
-	    	{
-//				e.printStackTrace();
-				String resultado = generarMensajeError(e);
+		} 
+		catch (Exception e) 
+		{
+			//				e.printStackTrace();
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+
+	public void adicionarPuntoDeAtencion( )
+	{
+		try 
+		{	    		
+			String tipoPunto = JOptionPane.showInputDialog (this, "Tipo punto?", "Adicionar Punto", JOptionPane.QUESTION_MESSAGE);
+			String localizacion = JOptionPane.showInputDialog (this, "localizacion?", "Adicionar Punto", JOptionPane.QUESTION_MESSAGE);
+			String oficina = JOptionPane.showInputDialog (this, "oficina?", "Adicionar Punto", JOptionPane.QUESTION_MESSAGE);
+
+
+			if (tipoPunto != null && localizacion != null  )
+			{
+
+				VOPuntoDeAtencion tb = bancAndes.adicionarPuntoDeAtencion (tipoPunto,localizacion,oficina);
+				if (tb == null)
+				{
+					throw new Exception ("No se pudo agregar el punto: " );
+				}
+				String resultado = "En adicionarPunto\n\n";
+				resultado += "Punto adicionada exitosamente: " + tb;
+				resultado += "\n Operaci�n terminada";
 				panelDatos.actualizarInterfaz(resultado);
 			}
-	    }
-	   
-	   public void eliminarCuenta( )
-	    {
-	    	try 
-	    	{
-	    		String numeroUnicoStr = JOptionPane.showInputDialog (this, "Id de la cuenta?", "Borrar cuenta", JOptionPane.QUESTION_MESSAGE);
-	    		if (numeroUnicoStr != null)
-	    		{
-	    			long numeroUnico = Long.valueOf (numeroUnicoStr);    		
-	    			long tbEliminados = bancAndes.eliminarCuentaJuridica (numeroUnico);
-	    			String resultado = "En cerrar Cuenta\n\n";
-	    			resultado += tbEliminados + " cuenta cerrada\n";
-	    			resultado += "\n Operaci�n terminada";
-	    			panelDatos.actualizarInterfaz(resultado);
-	    		}
-	    		else
-	    		{
-	    			panelDatos.actualizarInterfaz("Operaci�n cancelada por el usuario");
-	    		}
-			} 
-	    	catch (Exception e) 
-	    	{
-//				e.printStackTrace();
-				String resultado = generarMensajeError(e);
+			else
+			{
+				panelDatos.actualizarInterfaz("Operaci�n cancelada ");
+			}
+		} 
+		catch (Exception e) 
+		{
+			//				e.printStackTrace();
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+
+	public void eliminarCuenta( )
+	{
+		try 
+		{
+			String numeroUnicoStr = JOptionPane.showInputDialog (this, "Id de la cuenta?", "Borrar cuenta", JOptionPane.QUESTION_MESSAGE);
+			if (numeroUnicoStr != null)
+			{
+				long numeroUnico = Long.valueOf (numeroUnicoStr);    		
+				long tbEliminados = bancAndes.eliminarCuentaJuridica (numeroUnico);
+				String resultado = "En cerrar Cuenta\n\n";
+				resultado += tbEliminados + " cuenta cerrada\n";
+				resultado += "\n Operaci�n terminada";
 				panelDatos.actualizarInterfaz(resultado);
 			}
-	    }
-	   public void eliminarPrestamo( )
-	    {
-	    	try 
-	    	{
-	    		String idSrt = JOptionPane.showInputDialog (this, "Id del prestamo?", "Borrar prestamo", JOptionPane.QUESTION_MESSAGE);
-	    		if (idSrt != null)
-	    		{
-	    			long id = Long.valueOf (idSrt);    		
-	    			long tbEliminados = bancAndes.eliminarPrestamo (id);
-	    			String resultado = "En cerrar prestamo\n\n";
-	    			resultado += tbEliminados + " prestamo cerrado\n";
-	    			resultado += "\n Operaci�n terminada";
-	    			panelDatos.actualizarInterfaz(resultado);
-	    		}
-	    		else
-	    		{
-	    			panelDatos.actualizarInterfaz("Operaci�n cancelada por el usuario");
-	    		}
-			} 
-	    	catch (Exception e) 
-	    	{
-//				e.printStackTrace();
-				String resultado = generarMensajeError(e);
+			else
+			{
+				panelDatos.actualizarInterfaz("Operaci�n cancelada por el usuario");
+			}
+		} 
+		catch (Exception e) 
+		{
+			//				e.printStackTrace();
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+	public void eliminarPrestamo( )
+	{
+		try 
+		{
+			String idSrt = JOptionPane.showInputDialog (this, "Id del prestamo?", "Borrar prestamo", JOptionPane.QUESTION_MESSAGE);
+			if (idSrt != null)
+			{
+				long id = Long.valueOf (idSrt);    		
+				long tbEliminados = bancAndes.eliminarPrestamo (id);
+				String resultado = "En cerrar prestamo\n\n";
+				resultado += tbEliminados + " prestamo cerrado\n";
+				resultado += "\n Operaci�n terminada";
 				panelDatos.actualizarInterfaz(resultado);
 			}
-	    }
+			else
+			{
+				panelDatos.actualizarInterfaz("Operaci�n cancelada por el usuario");
+			}
+		} 
+		catch (Exception e) 
+		{
+			//				e.printStackTrace();
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
 
 
 	public void darCuentaParaCliente (){
-	try {
-		String idClienteStr = JOptionPane.showInputDialog (this, "Id del cliente?", "Dar cuenta", JOptionPane.QUESTION_MESSAGE);
-		if (idClienteStr != null)
-		{
-			long idCliente = Long.valueOf (idClienteStr);    		
-			List <VOCuenta> cuentas = bancAndes.darCuentaParaCliente (idCliente);
-			String resultado = "En dar cuenta\n\n";
-			resultado += "\n " +  cuentas.size() + " cuentas encontradas\n";
-			resultado += "\n Operaci�n terminada";
+		try {
+			String idClienteStr = JOptionPane.showInputDialog (this, "Id del cliente?", "Dar cuenta", JOptionPane.QUESTION_MESSAGE);
+			if (idClienteStr != null)
+			{
+				long idCliente = Long.valueOf (idClienteStr);    		
+				List <VOCuenta> cuentas = bancAndes.darCuentaParaCliente (idCliente);
+				String resultado = "En dar cuenta\n\n";
+				resultado += "\n " +  cuentas.size() + " cuentas encontradas\n";
+				resultado += "\n Operaci�n terminada";
+				panelDatos.actualizarInterfaz(resultado);
+			}
+			else
+			{
+				panelDatos.actualizarInterfaz("Operaci�n cancelada por el usuario");
+			}
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			String resultado = generarMensajeError(e);
 			panelDatos.actualizarInterfaz(resultado);
 		}
-		else
-		{
-			panelDatos.actualizarInterfaz("Operaci�n cancelada por el usuario");
-		}
-	} catch (Exception e) {
-		
-		e.printStackTrace();
-		String resultado = generarMensajeError(e);
-		panelDatos.actualizarInterfaz(resultado);
-	}
 	}
 
 	public void darClientes (){
@@ -507,7 +554,7 @@ public class Interfaz extends JFrame implements ActionListener{
 			}
 
 		}catch (Exception e) {
-			
+
 			e.printStackTrace();
 			String resultado = generarMensajeError(e);
 		}
@@ -532,7 +579,7 @@ public class Interfaz extends JFrame implements ActionListener{
 				panelDatos.actualizarInterfaz("Operaci�n cancelada por el usuario");
 			}
 		}catch (Exception e) {
-			
+
 			e.printStackTrace();
 			String resultado = generarMensajeError(e);
 			panelDatos.actualizarInterfaz(resultado);
@@ -555,16 +602,20 @@ public class Interfaz extends JFrame implements ActionListener{
 			{
 				panelDatos.actualizarInterfaz("Operaci�n cancelada por el usuario");
 			}
-			
+
 		} catch (Exception e) {
 			//e.printStackTrace();
 			String resultado = generarMensajeError(e);
 			panelDatos.actualizarInterfaz(resultado);
 		}
-		}
+	}
+
+
+
 
 	public List <Prestamo> darPrestamosGerenteGeneral ()
 	{
+<<<<<<< Updated upstream
 		String resultado = null;
 		
 		List <Prestamo> lista = new LinkedList<>();
@@ -662,128 +713,218 @@ public class Interfaz extends JFrame implements ActionListener{
 		return lista;
 
 	}
+=======
+
+		List <Prestamo> lista = bancAndes.darPrestamos();
+		return lista;
+>>>>>>> Stashed changes
 
 
 
+	}
 
 
+	public void asociarCuentaNatural() {
+
+		try 
+		{	    	
+
+			String numeroIDEmpleadorSrt = JOptionPane.showInputDialog (this, "Ingrese su numero de documento", "Asociar Cuenta", JOptionPane.QUESTION_MESSAGE);
 
 
-
-	   
-	   private String generarMensajeError(Exception e) 
-		{
-			String resultado = "************ Error en la ejecuci�n\n";
-			resultado += e.getLocalizedMessage() + ", " + darDetalleException(e);
-			resultado += "\n\nRevise datanucleus.log y parranderos.log para m�s detalles";
-			return resultado;
-		}
-	   
-		private String darDetalleException(Exception e) 
-		{
-			String resp = "";
-			if (e.getClass().getName().equals("javax.jdo.JDODataStoreException"))
+			if ( numeroIDEmpleadorSrt!= null )
 			{
-				JDODataStoreException je = (javax.jdo.JDODataStoreException) e;
-				return je.getNestedExceptions() [0].getMessage();
+
+				long numeroIDEmpleadorl = Long.valueOf (numeroIDEmpleadorSrt);			
+				BigDecimal numeroIDEmpleador = BigDecimal.valueOf(numeroIDEmpleadorl);
+
+				if (bancAndes.darTipoPersona (numeroIDEmpleadorl).equals("Juridica")) {
+					String numeroIDEmpleadoSrt = JOptionPane.showInputDialog (this, "Ingrese el numero de documento del empleado", "Asociar Cuenta", JOptionPane.QUESTION_MESSAGE);
+					long numeroIDEmpleadol = Long.valueOf (numeroIDEmpleadoSrt);
+					BigDecimal numeroIDEmpleado = BigDecimal.valueOf(numeroIDEmpleadol);
+					if (bancAndes.darTipoPersona (numeroIDEmpleadol).equals("Juridica")) {
+						String resultado = "No se puede asociar una cuenta juridica a otra cuenta juridica";				
+						resultado += "\n Operaci�n terminada";
+						panelDatos.actualizarInterfaz(resultado);
+					}
+					else {
+						String numeroCuentaEmpleadoSrt = JOptionPane.showInputDialog (this, "Ingrese el numero de cuenta del empleado", "Asociar Cuenta", JOptionPane.QUESTION_MESSAGE);
+						long numeroCuentaEmpleado = Long.valueOf (numeroCuentaEmpleadoSrt);						
+						if(numeroIDEmpleado.compareTo( bancAndes.darIdClienteNatural(numeroCuentaEmpleado))<0 || numeroIDEmpleado.compareTo( bancAndes.darIdClienteNatural(numeroCuentaEmpleado))>0 ) {
+							String resultado = "Esta cuenta no pertenece al empleado";				
+							resultado += "\n Operaci�n terminada";
+							panelDatos.actualizarInterfaz(resultado);						
+						}
+						else {
+							String numeroCuentaEmpleadorSrt = JOptionPane.showInputDialog (this, "Ingrese el numero de cuenta desde donde realizara los pagos", "Asociar Cuenta", JOptionPane.QUESTION_MESSAGE);
+							long numeroCuentaEmpleador = Long.valueOf (numeroCuentaEmpleadorSrt);
+							if(numeroIDEmpleador.compareTo(bancAndes.darIdClienteJuridico(numeroCuentaEmpleador))<0 || numeroIDEmpleador.compareTo(bancAndes.darIdClienteJuridico(numeroCuentaEmpleador))>0 ) {
+								String resultado = "Esta cuenta no le pertenece a usted";				
+								resultado += "\n Operaci�n terminada";
+								panelDatos.actualizarInterfaz(resultado);						
+							}
+							else {
+								String valorAPagarSrt = JOptionPane.showInputDialog (this, "Ingrese valor a pagar", "Asociar Cuenta", JOptionPane.QUESTION_MESSAGE);
+								long valorAPagar = Long.valueOf (valorAPagarSrt);
+								if(valorAPagar>0) {
+									String frecuenciaPagoSrt = JOptionPane.showInputDialog (this, "Ingrese la frecuencia de pago, mensual o quincenal", "Asociar Cuenta", JOptionPane.QUESTION_MESSAGE);
+									long tbEliminados = bancAndes.asociarCuentaNatural (numeroCuentaEmpleado,numeroCuentaEmpleador,valorAPagar,frecuenciaPagoSrt);
+									String resultado = "Asociar Cuentaa\n\n";
+									resultado += tbEliminados + " cuenta asociada\n";
+									resultado += "\n Operaci�n terminada";
+									panelDatos.actualizarInterfaz(resultado);
+									
+								}
+								else {
+									String resultado = "El valor a pagar tiene que ser mayor a cero";				
+									resultado += "\n Operaci�n terminada";
+									panelDatos.actualizarInterfaz(resultado);	
+								}
+							}
+						}
+					}
+
+				}
+				else if (bancAndes.darTipoPersona (numeroIDEmpleadorl).equals("Natural")) {
+					String resultado = "Usted no puede realizar esta operacion";				
+					resultado += "\n Operaci�n terminada";
+					panelDatos.actualizarInterfaz(resultado);
+
+				}
+				else
+				{
+					panelDatos.actualizarInterfaz("Operaci�n cancelada ");
+				}
 			}
-			return resp;
-		}
-		
-		public void mostrarLogBancAndes ()
+		} 
+		catch (Exception e) 
 		{
-			mostrarArchivo ("parranderos.log");
-		}
-		
-		public void mostrarLogDatanuecleus ()
-		{
-			mostrarArchivo ("datanucleus.log");
-		}
-		
-		public void limpiarLogBancAndes ()
-		{
-			// Ejecuci�n de la operaci�n y recolecci�n de los resultados
-			boolean resp = limpiarArchivo ("bancAndes.log");
-
-			// Generaci�n de la cadena de caracteres con la traza de la ejecuci�n de la demo
-			String resultado = "\n\n************ Limpiando el log de parranderos ************ \n";
-			resultado += "Archivo " + (resp ? "limpiado exitosamente" : "NO PUDO ser limpiado !!");
-			resultado += "\nLimpieza terminada";
-
+			//				e.printStackTrace();
+			String resultado = generarMensajeError(e);
 			panelDatos.actualizarInterfaz(resultado);
 		}
-		
-		public void limpiarLogDatanucleus ()
-		{
-			// Ejecuci�n de la operaci�n y recolecci�n de los resultados
-			boolean resp = limpiarArchivo ("datanucleus.log");
 
-			// Generaci�n de la cadena de caracteres con la traza de la ejecuci�n de la demo
-			String resultado = "\n\n************ Limpiando el log de datanucleus ************ \n";
-			resultado += "Archivo " + (resp ? "limpiado exitosamente" : "NO PUDO ser limpiado !!");
-			resultado += "\nLimpieza terminada";
 
-			panelDatos.actualizarInterfaz(resultado);
-		}
-		
-		private boolean limpiarArchivo(String nombreArchivo) 
+	}
+
+
+
+
+
+
+	private String generarMensajeError(Exception e) 
+	{
+		String resultado = "************ Error en la ejecuci�n\n";
+		resultado += e.getLocalizedMessage() + ", " + darDetalleException(e);
+		resultado += "\n\nRevise datanucleus.log y parranderos.log para m�s detalles";
+		return resultado;
+	}
+
+	private String darDetalleException(Exception e) 
+	{
+		String resp = "";
+		if (e.getClass().getName().equals("javax.jdo.JDODataStoreException"))
 		{
-			BufferedWriter bw;
-			try 
-			{
-				bw = new BufferedWriter(new FileWriter(new File (nombreArchivo)));
-				bw.write ("");
-				bw.close ();
-				return true;
-			} 
-			catch (IOException e) 
-			{
-//				e.printStackTrace();
-				return false;
-			}
+			JDODataStoreException je = (javax.jdo.JDODataStoreException) e;
+			return je.getNestedExceptions() [0].getMessage();
 		}
-		
-		private void mostrarArchivo (String nombreArchivo)
+		return resp;
+	}
+
+	public void mostrarLogBancAndes ()
+	{
+		mostrarArchivo ("parranderos.log");
+	}
+
+	public void mostrarLogDatanuecleus ()
+	{
+		mostrarArchivo ("datanucleus.log");
+	}
+
+	public void limpiarLogBancAndes ()
+	{
+		// Ejecuci�n de la operaci�n y recolecci�n de los resultados
+		boolean resp = limpiarArchivo ("bancAndes.log");
+
+		// Generaci�n de la cadena de caracteres con la traza de la ejecuci�n de la demo
+		String resultado = "\n\n************ Limpiando el log de parranderos ************ \n";
+		resultado += "Archivo " + (resp ? "limpiado exitosamente" : "NO PUDO ser limpiado !!");
+		resultado += "\nLimpieza terminada";
+
+		panelDatos.actualizarInterfaz(resultado);
+	}
+
+	public void limpiarLogDatanucleus ()
+	{
+		// Ejecuci�n de la operaci�n y recolecci�n de los resultados
+		boolean resp = limpiarArchivo ("datanucleus.log");
+
+		// Generaci�n de la cadena de caracteres con la traza de la ejecuci�n de la demo
+		String resultado = "\n\n************ Limpiando el log de datanucleus ************ \n";
+		resultado += "Archivo " + (resp ? "limpiado exitosamente" : "NO PUDO ser limpiado !!");
+		resultado += "\nLimpieza terminada";
+
+		panelDatos.actualizarInterfaz(resultado);
+	}
+
+	private boolean limpiarArchivo(String nombreArchivo) 
+	{
+		BufferedWriter bw;
+		try 
 		{
-			try
-			{
-				Desktop.getDesktop().open(new File(nombreArchivo));
-			}
-			catch (IOException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
-		public void actionPerformed(ActionEvent pEvento)
+			bw = new BufferedWriter(new FileWriter(new File (nombreArchivo)));
+			bw.write ("");
+			bw.close ();
+			return true;
+		} 
+		catch (IOException e) 
 		{
-			String evento = pEvento.getActionCommand( );		
-	        try 
-	        {
-				Method req = Interfaz.class.getMethod ( evento );			
-				req.invoke ( this );
-			} 
-	        catch (Exception e) 
-	        {
-				e.printStackTrace();
-			} 
+			//				e.printStackTrace();
+			return false;
 		}
-		
-		 public static void main( String[] args )
-		    {
-		        try
-		        {
-		        	
-		            // Unifica la interfaz para Mac y para Windows.
-		            UIManager.setLookAndFeel( UIManager.getCrossPlatformLookAndFeelClassName( ) );
-		            Interfaz interfaz = new Interfaz( );
-		            interfaz.setVisible( true );
-		        }
-		        catch( Exception e )
-		        {
-		            e.printStackTrace( );
-		        }
-		    }
+	}
+
+	private void mostrarArchivo (String nombreArchivo)
+	{
+		try
+		{
+			Desktop.getDesktop().open(new File(nombreArchivo));
+		}
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void actionPerformed(ActionEvent pEvento)
+	{
+		String evento = pEvento.getActionCommand( );		
+		try 
+		{
+			Method req = Interfaz.class.getMethod ( evento );			
+			req.invoke ( this );
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		} 
+	}
+
+	public static void main( String[] args )
+	{
+		try
+		{
+
+			// Unifica la interfaz para Mac y para Windows.
+			UIManager.setLookAndFeel( UIManager.getCrossPlatformLookAndFeelClassName( ) );
+			Interfaz interfaz = new Interfaz( );
+			interfaz.setVisible( true );
+		}
+		catch( Exception e )
+		{
+			e.printStackTrace( );
+		}
+	}
 
 }
